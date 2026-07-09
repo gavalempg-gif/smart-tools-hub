@@ -108,15 +108,27 @@ font-size:17px;
 Calculate EMI
 </button>
 
+<button onclick="resetLoan()" style="background:#ef4444;margin-top:10px;">
+Reset
+</button>
+
 <div class="result" id="result">
-  <script>
-function calculateLoan(){
+
+<p><b>Monthly EMI :</b> ₹ <span id="emi"></span></p>
+
+<p><b>Total Interest :</b> ₹ <span id="interest"></span></p>
+
+<p><b>Total Payment :</b> ₹ <span id="total"></span></p>
+
+</div>
+
+<script>
+  function calculateLoan(){
 
 let P=parseFloat(document.getElementById("loan").value);
 let R=parseFloat(document.getElementById("rate").value);
 let Y=parseFloat(document.getElementById("years").value);
-
-if(isNaN(P)||isNaN(R)||isNaN(Y)||P<=0||R<=0||Y<=0){
+  if(isNaN(P)||isNaN(R)||isNaN(Y)||P<=0||R<=0||Y<=0){
 alert("Please enter valid values.");
 return;
 }
@@ -129,29 +141,29 @@ let emi=(P*monthlyRate*Math.pow(1+monthlyRate,months))/
 
 let totalPayment=emi*months;
 let totalInterest=totalPayment-P;
+  document.getElementById("emi").innerHTML =
+Number(emi.toFixed(2)).toLocaleString("en-IN");
 
-document.getElementById("emi").innerHTML=emi.toFixed(2);
+document.getElementById("interest").innerHTML =
+Number(totalInterest.toFixed(2)).toLocaleString("en-IN");
 
-document.getElementById("interest").innerHTML=totalInterest.toFixed(2);
-
-document.getElementById("total").innerHTML=totalPayment.toFixed(2);
+document.getElementById("total").innerHTML =
+Number(totalPayment.toFixed(2)).toLocaleString("en-IN");
 
 document.getElementById("result").style.display="block";
+
+}
+
+function resetLoan(){
+
+document.getElementById("loan").value="";
+document.getElementById("rate").value="";
+document.getElementById("years").value="";
+
+document.getElementById("result").style.display="none";
+
 }
 </script>
 
-</div>
-
 </body>
-</html>
-
-<p><b>Monthly EMI :</b>
-₹ <span id="emi"></span></p>
-
-<p><b>Total Interest :</b>
-₹ <span id="interest"></span></p>
-
-<p><b>Total Payment :</b>
-₹ <span id="total"></span></p>
-
-</div>
+</html>  
