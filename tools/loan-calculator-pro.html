@@ -113,7 +113,19 @@ Reset
 </button>
 
 <div class="result" id="result">
-
+  
+<table id="schedule" style="width:100%;margin-top:20px;border-collapse:collapse;display:none;">
+<thead>
+<tr style="background:#2563eb;color:white;">
+<th>Month</th>
+<th>EMI</th>
+<th>Interest</th>
+<th>Principal</th>
+<th>Balance</th>
+</tr>
+</thead>
+<tbody id="scheduleBody"></tbody>
+</table>
 <p><b>Monthly EMI :</b> ₹ <span id="emi"></span></p>
 
 <p><b>Total Interest :</b> ₹ <span id="interest"></span></p>
@@ -151,7 +163,33 @@ document.getElementById("total").innerHTML =
 Number(totalPayment.toFixed(2)).toLocaleString("en-IN");
 
 document.getElementById("result").style.display="block";
+    
+let balance=P;
+let body="";
 
+for(let i=1;i<=months;i++){
+
+let interest=balance*monthlyRate;
+let principal=emi-interest;
+
+if(principal>balance){
+principal=balance;
+}
+
+balance-=principal;
+
+body+=`
+<tr>
+<td>${i}</td>
+<td>₹${emi.toFixed(2)}</td>
+<td>₹${interest.toFixed(2)}</td>
+<td>₹${principal.toFixed(2)}</td>
+<td>₹${Math.max(balance,0).toFixed(2)}</td>
+</tr>`;
+}
+
+document.getElementById("scheduleBody").innerHTML=body;
+document.getElementById("schedule").style.display="table";
 }
 
 function resetLoan(){
