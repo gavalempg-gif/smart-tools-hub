@@ -110,27 +110,6 @@ border-radius:10px;
 <button id="resetBtn" onclick="resetLoan()">Reset</button>
 <button onclick="downloadPDF()">📄 Download PDF</button>    
 
-
-const { jsPDF } = window.jspdf;
-
-const pdf = new jsPDF();
-
-pdf.setFontSize(18);
-pdf.text("Loan Calculator Report",20,20);
-
-pdf.setFontSize(12);
-pdf.text("Loan Amount : ₹ " + document.getElementById("loan").value,20,40);
-pdf.text("Interest Rate : " + document.getElementById("rate").value + "%",20,50);
-pdf.text("Loan Tenure : " + document.getElementById("years").value + " Years",20,60);
-
-pdf.text("Monthly EMI : ₹ " + document.getElementById("emi").textContent,20,80);
-pdf.text("Total Interest : ₹ " + document.getElementById("interest").textContent,20,90);
-pdf.text("Total Payment : ₹ " + document.getElementById("total").textContent,20,100);
-
-pdf.save("Loan-Report.pdf");
-
-}   
-
 <div class="result" id="result">
 
 <p><b>Monthly EMI:</b> ₹ <span id="emi"></span></p>
@@ -245,10 +224,29 @@ if(loanChart){
 }
 
 }
-<script>
-async function downloadPDF() {
-   ...
+    async function downloadPDF() {
+
+    const { jsPDF } = window.jspdf;
+
+    const pdf = new jsPDF();
+
+    pdf.setFontSize(18);
+    pdf.text("Loan Calculator Report", 20, 20);
+
+    pdf.setFontSize(12);
+    pdf.text("Loan Amount: ₹ " + document.getElementById("loan").value, 20, 40);
+    pdf.text("Interest Rate: " + document.getElementById("rate").value + "%", 20, 50);
+    pdf.text("Loan Tenure: " + document.getElementById("years").value + " Years", 20, 60);
+
+    pdf.text("Monthly EMI: ₹ " + document.getElementById("emi").textContent, 20, 80);
+    pdf.text("Total Interest: ₹ " + document.getElementById("interest").textContent, 20, 90);
+    pdf.text("Total Payment: ₹ " + document.getElementById("total").textContent, 20, 100);
+
+    pdf.save("Loan-Report.pdf");
+
 }
+<script>
+
 </script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
