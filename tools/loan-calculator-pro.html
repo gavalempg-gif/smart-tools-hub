@@ -228,9 +228,97 @@ document.getElementById("result").style.display="none";
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <script>
-   // calculateLoan()
-   // resetLoan()
+function calculateLoan() {
+  function calculateLoan() {
+
+let P = parseFloat(document.getElementById("loan").value);
+let R = parseFloat(document.getElementById("rate").value);
+let Y = parseFloat(document.getElementById("years").value);
+
+if (isNaN(P) || isNaN(R) || isNaN(Y) || P <= 0 || R <= 0 || Y <= 0) {
+    alert("Please enter valid values.");
+    return;
+}
+
+let monthlyRate = R / (12 * 100);
+let months = Y * 12;
+
+let emi = (P * monthlyRate * Math.pow(1 + monthlyRate, months)) /
+          (Math.pow(1 + monthlyRate, months) - 1);
+
+let totalPayment = emi * months;
+let totalInterest = totalPayment - P;
+
+document.getElementById("emi").innerHTML =
+Number(emi.toFixed(2)).toLocaleString("en-IN");
+
+document.getElementById("interest").innerHTML =
+Number(totalInterest.toFixed(2)).toLocaleString("en-IN");
+
+document.getElementById("total").innerHTML =
+Number(totalPayment.toFixed(2)).toLocaleString("en-IN");
+
+document.getElementById("result").style.display = "block";
+
+let balance = P;
+let body = "";
+
+for (let i = 1; i <= months; i++) {
+
+    let interest = balance * monthlyRate;
+    let principal = emi - interest;
+
+    if (principal > balance) {
+        principal = balance;
+    }
+
+    balance -= principal;
+
+    body += `
+<tr>
+<td>${i}</td>
+<td>₹${emi.toFixed(2)}</td>
+<td>₹${interest.toFixed(2)}</td>
+<td>₹${principal.toFixed(2)}</td>
+<td>₹${Math.max(balance,0).toFixed(2)}</td>
+</tr>`;
+}
+
+document.getElementById("scheduleBody").innerHTML = body;
+document.getElementById("schedule").style.display = "table";
+
+// Pie Chart
+const ctx = document.getElementById("loanChart").getContext("2d");
+
+if (window.loanChart) {
+    window.loanChart.destroy();
+}
+
+window.loanChart = new Chart(ctx, {
+    type: "pie",
+    data: {
+        labels: ["Principal", "Interest"],
+        datasets: [{
+            data: [P, totalInterest],
+            backgroundColor: ["#4CAF50", "#FF9800"]
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false
+    }
+});
+
+}
+}
+
+function resetLoan() {
+   // reset code
+}
+</script>
 </script>
 
 </body>
