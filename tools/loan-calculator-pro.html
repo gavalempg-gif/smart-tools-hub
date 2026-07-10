@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Loan Calculator Pro</title>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <style>
 *{
 margin:0;
@@ -19,18 +21,18 @@ padding:20px;
 }
 
 .container{
-max-width:500px;
+max-width:900px;
 margin:auto;
-background:white;
+background:#fff;
 padding:20px;
 border-radius:15px;
-box-shadow:0 5px 15px rgba(0,0,0,.2);
+box-shadow:0 5px 20px rgba(0,0,0,.15);
 }
 
 h1{
 text-align:center;
-color:#2563eb;
 margin-bottom:20px;
+color:#2563eb;
 }
 
 .input-box{
@@ -39,48 +41,46 @@ margin-bottom:15px;
 
 label{
 display:block;
-margin-bottom:5px;
+margin-bottom:6px;
 font-weight:bold;
 }
 
 input{
 width:100%;
 padding:12px;
+font-size:16px;
 border:1px solid #ccc;
 border-radius:8px;
-font-size:16px;
 }
 
 button{
 width:100%;
 padding:14px;
-background:#2563eb;
-color:white;
+margin-top:10px;
+font-size:18px;
 border:none;
 border-radius:8px;
-font-size:18px;
 cursor:pointer;
-margin-top:10px;
 }
 
-button:hover{
-background:#1d4ed8;
+#calcBtn{
+background:#2563eb;
+color:white;
+}
+
+#resetBtn{
+background:#ef4444;
+color:white;
 }
 
 .result{
+display:none;
 margin-top:20px;
 background:#eef4ff;
 padding:15px;
 border-radius:10px;
-display:none;
-}
-
-.result p{
-margin:10px 0;
-font-size:17px;
 }
 </style>
-
 </head>
 
 <body>
@@ -104,19 +104,23 @@ font-size:17px;
 <input type="number" id="years">
 </div>
 
-<button onclick="calculateLoan()">
-Calculate EMI
-</button>
+<button id="calcBtn" onclick="calculateLoan()">Calculate EMI</button>
 
-<button onclick="resetLoan()" style="background:#ef4444;margin-top:10px;">
-Reset
-</button>
+<button id="resetBtn" onclick="resetLoan()">Reset</button>
 
 <div class="result" id="result">
-  
-<table id="schedule" style="width:100%;margin-top:20px;border-collapse:collapse;display:none;">
+
+<p><b>Monthly EMI:</b> ₹ <span id="emi"></span></p>
+<p><b>Total Interest:</b> ₹ <span id="interest"></span></p>
+<p><b>Total Payment:</b> ₹ <span id="total"></span></p>
+
+<div style="height:300px;margin-top:20px;">
+<canvas id="loanChart"></canvas>
+</div>
+
+<table id="schedule" border="1" width="100%" style="margin-top:20px;border-collapse:collapse;">
 <thead>
-<tr style="background:#2563eb;color:white;">
+<tr>
 <th>Month</th>
 <th>EMI</th>
 <th>Interest</th>
@@ -124,121 +128,23 @@ Reset
 <th>Balance</th>
 </tr>
 </thead>
+
 <tbody id="scheduleBody"></tbody>
+
 </table>
-<p><b>Monthly EMI :</b> ₹ <span id="emi"></span></p>
-
-<p><b>Total Interest :</b> ₹ <span id="interest"></span></p>
-
-<p><b>Total Payment :</b> ₹ <span id="total"></span></p>
 
 </div>
-
 <script>
-  function calculateLoan(){
 
-let P=parseFloat(document.getElementById("loan").value);
-let R=parseFloat(document.getElementById("rate").value);
-let Y=parseFloat(document.getElementById("years").value);
-  if(isNaN(P)||isNaN(R)||isNaN(Y)||P<=0||R<=0||Y<=0){
-alert("Please enter valid values.");
-return;
-}
+let loanChart = null;
 
-let monthlyRate=R/(12*100);
-let months=Y*12;
-
-let emi=(P*monthlyRate*Math.pow(1+monthlyRate,months))/
-(Math.pow(1+monthlyRate,months)-1);
-
-let totalPayment=emi*months;
-let totalInterest=totalPayment-P;
-  document.getElementById("emi").innerHTML =
-Number(emi.toFixed(2)).toLocaleString("en-IN");
-
-document.getElementById("interest").innerHTML =
-Number(totalInterest.toFixed(2)).toLocaleString("en-IN");
-
-document.getElementById("total").innerHTML =
-Number(totalPayment.toFixed(2)).toLocaleString("en-IN");
-
-document.getElementById("result").style.display="block";
-    
-let balance=P;
-let body="";
-
-for(let i=1;i<=months;i++){
-
-let interest=balance*monthlyRate;
-let principal=emi-interest;
-
-if(principal>balance){
-principal=balance;
-}
-
-balance-=principal;
-
-body+=`
-<tr>
-<td>${i}</td>
-<td>₹${emi.toFixed(2)}</td>
-<td>₹${interest.toFixed(2)}</td>
-<td>₹${principal.toFixed(2)}</td>
-<td>₹${Math.max(balance,0).toFixed(2)}</td>
-</tr>`;
-}
-
-document.getElementById("scheduleBody").innerHTML=body;
-document.getElementById("schedule").style.display="table";
-let ctx = document.getElementById("loanChart").getContext("2d");
-
-if (window.loanChart) {
-    window.loanChart.destroy();
-}
-
-window.loanChart = new Chart(ctx, {
-    type: "pie",
-    data: {
-        labels: ["Principal", "Interest"],
-        datasets: [{
-            data: [P, totalInterest],
-            backgroundColor: ["#4CAF50", "#FF9800"]
-        }]
-    },
-    options: {
-        responsive: true
-    }
-});
-}
-
-function resetLoan(){
-
-document.getElementById("loan").value="";
-document.getElementById("rate").value="";
-document.getElementById("years").value="";
-
-document.getElementById("result").style.display="none";
-
-}
-</script>
-  
-<div style="margin-top:30px;">
-    <canvas id="loanChart"></canvas>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<script>
-function calculateLoan() {
-  function calculateLoan() {
+function calculateLoan(){
 
 let P = parseFloat(document.getElementById("loan").value);
 let R = parseFloat(document.getElementById("rate").value);
 let Y = parseFloat(document.getElementById("years").value);
 
-if (isNaN(P) || isNaN(R) || isNaN(Y) || P <= 0 || R <= 0 || Y <= 0) {
+if(isNaN(P) || isNaN(R) || isNaN(Y) || P<=0 || R<=0 || Y<=0){
     alert("Please enter valid values.");
     return;
 }
@@ -252,73 +158,71 @@ let emi = (P * monthlyRate * Math.pow(1 + monthlyRate, months)) /
 let totalPayment = emi * months;
 let totalInterest = totalPayment - P;
 
-document.getElementById("emi").innerHTML =
-Number(emi.toFixed(2)).toLocaleString("en-IN");
-
-document.getElementById("interest").innerHTML =
-Number(totalInterest.toFixed(2)).toLocaleString("en-IN");
-
-document.getElementById("total").innerHTML =
-Number(totalPayment.toFixed(2)).toLocaleString("en-IN");
+document.getElementById("emi").textContent = emi.toFixed(2);
+document.getElementById("interest").textContent = totalInterest.toFixed(2);
+document.getElementById("total").textContent = totalPayment.toFixed(2);
 
 document.getElementById("result").style.display = "block";
 
 let balance = P;
-let body = "";
+let rows = "";
 
-for (let i = 1; i <= months; i++) {
+for(let i=1;i<=months;i++){
 
-    let interest = balance * monthlyRate;
-    let principal = emi - interest;
+let interest = balance * monthlyRate;
+let principal = emi - interest;
 
-    if (principal > balance) {
-        principal = balance;
-    }
+if(principal > balance){
+    principal = balance;
+}
 
-    balance -= principal;
+balance -= principal;
 
-    body += `
+rows += `
 <tr>
 <td>${i}</td>
-<td>₹${emi.toFixed(2)}</td>
-<td>₹${interest.toFixed(2)}</td>
-<td>₹${principal.toFixed(2)}</td>
-<td>₹${Math.max(balance,0).toFixed(2)}</td>
+<td>${emi.toFixed(2)}</td>
+<td>${interest.toFixed(2)}</td>
+<td>${principal.toFixed(2)}</td>
+<td>${Math.max(balance,0).toFixed(2)}</td>
 </tr>`;
 }
 
-document.getElementById("scheduleBody").innerHTML = body;
-document.getElementById("schedule").style.display = "table";
+document.getElementById("scheduleBody").innerHTML = rows;
 
-// Pie Chart
-const ctx = document.getElementById("loanChart").getContext("2d");
-
-if (window.loanChart) {
-    window.loanChart.destroy();
+if(loanChart){
+    loanChart.destroy();
 }
 
-window.loanChart = new Chart(ctx, {
-    type: "pie",
-    data: {
-        labels: ["Principal", "Interest"],
-        datasets: [{
-            data: [P, totalInterest],
-            backgroundColor: ["#4CAF50", "#FF9800"]
+loanChart = new Chart(document.getElementById("loanChart"),{
+    type:"pie",
+    data:{
+        labels:["Principal","Interest"],
+        datasets:[{
+            data:[P,totalInterest]
         }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false
     }
 });
 
 }
+
+function resetLoan(){
+
+document.getElementById("loan").value="";
+document.getElementById("rate").value="";
+document.getElementById("years").value="";
+
+document.getElementById("result").style.display="none";
+
+document.getElementById("scheduleBody").innerHTML="";
+
+if(loanChart){
+    loanChart.destroy();
+    loanChart=null;
 }
 
-function resetLoan() {
-   // reset code
 }
-</script>
+
 </script>
 
 </body>
