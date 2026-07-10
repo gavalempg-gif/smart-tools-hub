@@ -109,7 +109,7 @@ border-radius:10px;
 
 <button id="resetBtn" onclick="resetLoan()">Reset</button>
 <button onclick="downloadPDF()">📄 Download PDF</button>    
- async function downloadPDF(){
+
 
 const { jsPDF } = window.jspdf;
 
@@ -245,7 +245,10 @@ if(loanChart){
 }
 
 }
-
+<script>
+async function downloadPDF() {
+   ...
+}
 </script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
