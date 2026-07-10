@@ -108,6 +108,7 @@ border-radius:10px;
 <button id="calcBtn" onclick="calculateLoan()">Calculate EMI</button>
 
 <button id="resetBtn" onclick="resetLoan()">Reset</button>
+<button onclick="downloadPDF()">📄 Download PDF</button>    
  async function downloadPDF(){
 
 const { jsPDF } = window.jspdf;
@@ -248,6 +249,10 @@ if(loanChart){
 }
 
 </script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
 </body>
 </html>
