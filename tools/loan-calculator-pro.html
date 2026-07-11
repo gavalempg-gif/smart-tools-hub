@@ -108,8 +108,11 @@ border-radius:10px;
 <button id="calcBtn" onclick="calculateLoan()">Calculate EMI</button>
 
 <button id="resetBtn" onclick="resetLoan()">Reset</button>
-<button onclick="downloadPDF()">📄 Download PDF</button>    
-
+<button onclick="downloadPDF()">📄 Download PDF</button> 
+    
+<button onclick="downloadCSV()" style="background:#10b981;color:white;">
+📊 Download Excel (CSV)
+</button>
 <div class="result" id="result">
 
 <p><b>Monthly EMI:</b> ₹ <span id="emi"></span></p>
