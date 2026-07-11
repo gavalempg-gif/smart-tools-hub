@@ -177,7 +177,7 @@ border-radius:10px;">
 
 <h2>📈 Loan Balance Graph</h2>
 
-<canvas id="balanceChart" height="120"></canvas>
+
 <div style="height:300px; margin-top:20px;">
     <canvas id="balanceChart"></canvas>
 </div>    
@@ -254,12 +254,9 @@ loanChart = new Chart(document.getElementById("loanChart"),{
         data:{
         labels:["Principal","Interest"],
         datasets:[{
-            data:[P,totalInterest],
-        datasets:[{
-            data:[P,totalInterest],
-            backgroundColor:["#2196F3","#FF6384"]
-}]   
-        }]
+    data:[P,totalInterest],
+    backgroundColor:["#2196F3","#FF6384"]
+}]
     }
 });
     
@@ -294,7 +291,11 @@ if(loanChart){
     loanChart.destroy();
     loanChart=null;
 }
-
+if(balanceChart){
+    balanceChart.destroy();
+    balanceChart = null;
+}
+    
 }
     async function downloadPDF() {
 
