@@ -116,6 +116,34 @@ border-radius:10px;
 🖨️ Print Report
 </button> 
 </button>
+    <hr style="margin:30px 0;">
+
+<h2>💰 Loan Prepayment Calculator</h2>
+
+<div class="input-box">
+<label>Yearly Prepayment (₹)</label>
+<input type="number" id="prepayment" placeholder="50000">
+</div>
+
+<button onclick="calculatePrepayment()"
+style="background:#8b5cf6;color:white;">
+💰 Calculate Prepayment Benefit
+</button>
+
+<div id="prepaymentResult"
+style="display:none;
+margin-top:20px;
+padding:15px;
+background:#f3f4f6;
+border-radius:10px;">
+
+<p><b>Interest Saved:</b> ₹
+<span id="savedInterest"></span></p>
+
+<p><b>Loan Closed Early:</b>
+<span id="savedYears"></span> Years</p>
+
+</div>
 <div class="result" id="result">
 
 <p><b>Monthly EMI:</b> ₹ <span id="emi"></span></p>
