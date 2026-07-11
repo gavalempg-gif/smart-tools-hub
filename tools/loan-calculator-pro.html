@@ -213,6 +213,9 @@ document.getElementById("result").style.display = "block";
 let balance = P;
 let rows = "";
 
+let balanceLabels = [];
+let balanceData = [];
+
 for(let i=1;i<=months;i++){
 
 let interest = balance * monthlyRate;
@@ -223,6 +226,8 @@ if(principal > balance){
 }
 
 balance -= principal;
+balanceLabels.push(i);
+balanceData.push(Math.max(balance, 0).toFixed(2));    
 
 rows += `
 <tr>
@@ -241,6 +246,26 @@ if(loanChart){
 }
 
 loanChart = new Chart(document.getElementById("loanChart"),{
+ if(balanceChart){
+    balanceChart.destroy();
+}
+
+balanceChart = new Chart(document.getElementById("balanceChart"),{
+    type:"line",
+    data:{
+        labels: balanceLabels,
+        datasets:[{
+            label:"Loan Balance",
+            data: balanceData,
+            fill:false,
+            borderWidth:2,
+            tension:0.2
+        }]
+    },
+    options:{
+        responsive:true
+    }
+});   
     type:"pie",
     data:{
         labels:["Principal","Interest"],
