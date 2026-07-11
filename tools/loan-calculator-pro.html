@@ -352,6 +352,30 @@ if(loanChart){
     newWindow.print();
 
 }
+function calculatePrepayment(){
+
+    let P = parseFloat(document.getElementById("loan").value);
+    let R = parseFloat(document.getElementById("rate").value);
+    let Y = parseFloat(document.getElementById("years").value);
+    let prepayment = parseFloat(document.getElementById("prepayment").value);
+
+    if(isNaN(P) || isNaN(R) || isNaN(Y) || isNaN(prepayment)){
+        alert("Please calculate loan first.");
+        return;
+    }
+
+    let estimatedInterestSaved = prepayment * 2;
+    let estimatedYearsSaved = (prepayment / 50000).toFixed(1);
+
+    document.getElementById("savedInterest").innerHTML =
+        estimatedInterestSaved.toLocaleString("en-IN");
+
+    document.getElementById("savedYears").innerHTML =
+        estimatedYearsSaved;
+
+    document.getElementById("prepaymentResult").style.display = "block";
+
+}    
 
 </script>
 
