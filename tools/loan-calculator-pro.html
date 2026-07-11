@@ -246,10 +246,16 @@ if(loanChart){
 }
 
 loanChart = new Chart(document.getElementById("loanChart"),{
- if(balanceChart){
-    balanceChart.destroy();
-}
 
+        type:"pie",
+        data:{
+        labels:["Principal","Interest"],
+        datasets:[{
+            data:[P,totalInterest]
+        }]
+    }
+});
+    
 balanceChart = new Chart(document.getElementById("balanceChart"),{
     type:"line",
     data:{
@@ -266,16 +272,6 @@ balanceChart = new Chart(document.getElementById("balanceChart"),{
         responsive:true
     }
 });   
-    type:"pie",
-    data:{
-        labels:["Principal","Interest"],
-        datasets:[{
-            data:[P,totalInterest]
-        }]
-    }
-});
-
-}
 
 function resetLoan(){
 
