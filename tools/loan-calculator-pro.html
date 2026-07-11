@@ -172,11 +172,17 @@ border-radius:10px;">
 <tbody id="scheduleBody"></tbody>
 
 </table>
+    
+<hr>
 
+<h2>📈 Loan Balance Graph</h2>
+
+<canvas id="balanceChart" height="120"></canvas>
 </div>
 <script>
 
 let loanChart = null;
+let balanceChart = null;   
 
 function calculateLoan(){
 
