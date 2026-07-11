@@ -254,11 +254,14 @@ loanChart = new Chart(document.getElementById("loanChart"),{
         data:{
         labels:["Principal","Interest"],
         datasets:[{
-            data:[P,totalInterest]
+            data:[P,totalInterest],
+        datasets:[{
+            data:[P,totalInterest],
+            backgroundColor:["#2196F3","#FF6384"]
+}]   
         }]
     }
 });
-}
     
 balanceChart = new Chart(document.getElementById("balanceChart"),{
     type:"line",
@@ -276,7 +279,7 @@ balanceChart = new Chart(document.getElementById("balanceChart"),{
         responsive:true
     }
 });   
-
+}
 function resetLoan(){
 
 document.getElementById("loan").value="";
