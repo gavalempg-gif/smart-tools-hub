@@ -247,6 +247,43 @@ if(loanChart){
     pdf.save("Loan-Report.pdf");
 
 }
+   function downloadCSV() {
+
+    let csv = "Month,EMI,Interest,Principal,Balance\n";
+
+    const rows = document.querySelectorAll("#scheduleBody tr");
+
+    rows.forEach(row => {
+
+        let cols = row.querySelectorAll("td");
+
+        let data = [];
+
+        cols.forEach(col => {
+            data.push(col.innerText.replace(/,/g, ""));
+        });
+
+        csv += data.join(",") + "\n";
+
+    });
+
+    let blob = new Blob([csv], {
+        type: "text/csv;charset=utf-8;"
+    });
+
+    let link = document.createElement("a");
+
+    link.href = URL.createObjectURL(blob);
+
+    link.download = "Loan-Amortization-Schedule.csv";
+
+    document.body.appendChild(link);
+
+    link.click();
+
+    document.body.removeChild(link);
+
+} 
 
 </script>
 
