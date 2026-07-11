@@ -357,30 +357,52 @@ if(loanChart){
     newWindow.print();
 
 }
-function calculatePrepayment(){
+ function calculatePrepayment() {
 
     let P = parseFloat(document.getElementById("loan").value);
     let R = parseFloat(document.getElementById("rate").value);
     let Y = parseFloat(document.getElementById("years").value);
     let prepayment = parseFloat(document.getElementById("prepayment").value);
 
-    if(isNaN(P) || isNaN(R) || isNaN(Y) || isNaN(prepayment)){
-        alert("Please calculate loan first.");
+    if (isNaN(P) || isNaN(R) || isNaN(Y) || isNaN(prepayment)) {
+        alert("Please enter all values.");
         return;
     }
 
-    let estimatedInterestSaved = prepayment * 2;
-    let estimatedYearsSaved = (prepayment / 50000).toFixed(1);
+    let monthlyRate = R / (12 * 100);
+    let months = Y * 12;
+
+    let emi = (P * monthlyRate * Math.pow(1 + monthlyRate, months)) /
+              (Math.pow(1 + monthlyRate, months) - 1);
+
+    let originalInterest = (emi * months) - P;
+
+    let newPrincipal = Math.max(P - prepayment, 0);
+
+    let newEmi = (newPrincipal * monthlyRate * Math.pow(1 + monthlyRate, months)) /
+                 (Math.pow(1 + monthlyRate, months) - 1);
+
+    let newInterest = (newEmi * months) - newPrincipal;
+
+    let interestSaved = originalInterest - newInterest;
+
+    let yearsSaved = (prepayment / emi / 12).toFixed(1);
 
     document.getElementById("savedInterest").innerHTML =
-        estimatedInterestSaved.toLocaleString("en-IN");
+        interestSaved.toFixed(2);
 
     document.getElementById("savedYears").innerHTML =
-        estimatedYearsSaved;
+        yearsSaved;
+
+    document.getElementById("newTenure").innerHTML =
+        (Y - yearsSaved).toFixed(1);
+
+    document.getElementById("newInterest").innerHTML =
+        newInterest.toFixed(2);
 
     document.getElementById("prepaymentResult").style.display = "block";
 
-}    
+}
 
 </script>
 
