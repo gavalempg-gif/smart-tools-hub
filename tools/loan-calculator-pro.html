@@ -217,6 +217,11 @@ border-radius:10px;">
 <p><b>Loan 2 EMI:</b> ₹ <span id="emi2Compare"></span></p>
 
 <p><b>Difference:</b> ₹ <span id="emiDifference"></span></p>
+<p><b>Loan 1 Total Interest:</b> ₹
+<span id="interest1Compare"></span></p>
+
+<p><b>Loan 2 Total Interest:</b> ₹
+<span id="interest2Compare"></span></p>   
 
 </div>
 <script>
@@ -496,6 +501,8 @@ let n1 = Y1 * 12;
 
 let emi1 = (P1 * r1 * Math.pow(1 + r1, n1)) /
            (Math.pow(1 + r1, n1) - 1);
+let totalInterest1 = (emi1 * n1) - P1;
+let totalInterest2 = (emi2 * n2) - P2;
 
 let r2 = R2 / (12 * 100);
 let n2 = Y2 * 12;
@@ -508,6 +515,11 @@ document.getElementById("emi2Compare").textContent = emi2.toFixed(2);
 
 document.getElementById("emiDifference").textContent =
 Math.abs(emi1 - emi2).toFixed(2);
+document.getElementById("interest1Compare").textContent =
+totalInterest1.toFixed(2);
+
+document.getElementById("interest2Compare").textContent =
+totalInterest2.toFixed(2);
 
 document.getElementById("compareResult").style.display = "block";
 
