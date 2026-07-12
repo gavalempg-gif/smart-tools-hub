@@ -221,7 +221,10 @@ border-radius:10px;">
 <span id="interest1Compare"></span></p>
 
 <p><b>Loan 2 Total Interest:</b> ₹
-<span id="interest2Compare"></span></p>   
+<span id="interest2Compare"></span></p>  
+
+<p><b>🏆 Better Choice:</b>
+<span id="betterLoan"></span></p>   
 
 </div>
 <script>
@@ -521,6 +524,22 @@ totalInterest1.toFixed(2);
 
 document.getElementById("interest2Compare").textContent =
 totalInterest2.toFixed(2);
+if(totalInterest1 < totalInterest2){
+
+document.getElementById("betterLoan").innerHTML =
+"✅ Loan 1 is Better (Lower Interest)";
+
+}else if(totalInterest2 < totalInterest1){
+
+document.getElementById("betterLoan").innerHTML =
+"✅ Loan 2 is Better (Lower Interest)";
+
+}else{
+
+document.getElementById("betterLoan").innerHTML =
+"Both Loans are Equal";
+
+}  
 
 document.getElementById("compareResult").style.display = "block";
 
