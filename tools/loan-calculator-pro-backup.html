@@ -1,1 +1,447 @@
 
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Loan Calculator Pro</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#f5f7fb;
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:#fff;
+padding:20px;
+border-radius:15px;
+box-shadow:0 5px 20px rgba(0,0,0,.15);
+}
+
+h1{
+text-align:center;
+margin-bottom:20px;
+color:#2563eb;
+}
+
+.input-box{
+margin-bottom:15px;
+}
+
+label{
+display:block;
+margin-bottom:6px;
+font-weight:bold;
+}
+
+input{
+width:100%;
+padding:12px;
+font-size:16px;
+border:1px solid #ccc;
+border-radius:8px;
+}
+
+button{
+width:100%;
+padding:14px;
+margin-top:10px;
+font-size:18px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+}
+
+#calcBtn{
+background:#2563eb;
+color:white;
+}
+
+#resetBtn{
+background:#ef4444;
+color:white;
+}
+
+.result{
+display:none;
+margin-top:20px;
+background:#eef4ff;
+padding:15px;
+border-radius:10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🏦 Loan Calculator Pro</h1>
+
+<div class="input-box">
+<label>Loan Amount (₹)</label>
+<input type="number" id="loan">
+</div>
+
+<div class="input-box">
+<label>Interest Rate (%)</label>
+<input type="number" id="rate">
+</div>
+
+<div class="input-box">
+<label>Loan Tenure (Years)</label>
+<input type="number" id="years">
+</div>
+
+<button id="calcBtn" onclick="calculateLoan()">Calculate EMI</button>
+
+<button id="resetBtn" onclick="resetLoan()">Reset</button>
+<button onclick="downloadPDF()">📄 Download PDF</button> 
+    
+<button onclick="downloadCSV()" style="background:#10b981;color:white;">
+📊 Download Excel (CSV)
+<button onclick="printReport()" style="background:#f59e0b;color:white;">
+🖨️ Print Report
+</button> 
+</button>
+    <hr style="margin:30px 0;">
+
+<h2>💰 Loan Prepayment Calculator</h2>
+
+<div class="input-box">
+<label>Yearly Prepayment (₹)</label>
+<input type="number" id="prepayment" placeholder="50000">
+</div>
+
+<button onclick="calculatePrepayment()"
+style="background:#8b5cf6;color:white;">
+💰 Calculate Prepayment Benefit
+</button>
+
+<div id="prepaymentResult"
+style="display:none;
+margin-top:20px;
+padding:15px;
+background:#f3f4f6;
+border-radius:10px;">
+
+<p><b>Interest Saved:</b> ₹
+<span id="savedInterest"></span></p>
+
+<p><b>Loan Closed Early:</b>
+<span id="savedYears"></span> Years</p>
+<p><b>New Loan Tenure:</b>
+<span id="newTenure"></span> Years</p>
+
+<p><b>New Total Interest:</b> ₹
+<span id="newInterest"></span></p>
+
+</div>
+<div class="result" id="result">
+
+<p><b>Monthly EMI:</b> ₹ <span id="emi"></span></p>
+<p><b>Total Interest:</b> ₹ <span id="interest"></span></p>
+<p><b>Total Payment:</b> ₹ <span id="total"></span></p>
+<div style="height:300px;margin-top:20px;">
+<canvas id="loanChart"></canvas>
+</div>
+
+<table id="schedule" border="1" width="100%" style="margin-top:20px;border-collapse:collapse;">
+<thead>
+<tr>
+<th>Month</th>
+<th>EMI</th>
+<th>Interest</th>
+<th>Principal</th>
+<th>Balance</th>
+</tr>
+</thead>
+
+<tbody id="scheduleBody"></tbody>
+
+</table>
+    
+<hr>
+
+<h2>📈 Loan Balance Graph</h2>
+
+
+<div style="height:300px; margin-top:20px;">
+    <canvas id="balanceChart"></canvas>
+</div>    
+</div>
+<script>
+
+let loanChart = null;
+let balanceChart = null;   
+
+function calculateLoan(){
+
+let P = parseFloat(document.getElementById("loan").value);
+let R = parseFloat(document.getElementById("rate").value);
+let Y = parseFloat(document.getElementById("years").value);
+
+if(isNaN(P) || isNaN(R) || isNaN(Y) || P<=0 || R<=0 || Y<=0){
+    alert("Please enter valid values.");
+    return;
+}
+
+let monthlyRate = R / (12 * 100);
+let months = Y * 12;
+
+let emi = (P * monthlyRate * Math.pow(1 + monthlyRate, months)) /
+          (Math.pow(1 + monthlyRate, months) - 1);
+
+let totalPayment = emi * months;
+let totalInterest = totalPayment - P;
+
+document.getElementById("emi").textContent = emi.toFixed(2);
+document.getElementById("interest").textContent = totalInterest.toFixed(2);
+document.getElementById("total").textContent = totalPayment.toFixed(2);
+
+document.getElementById("result").style.display = "block";
+
+let balance = P;
+let rows = "";
+
+let balanceLabels = [];
+let balanceData = [];
+
+for(let i=1;i<=months;i++){
+
+let interest = balance * monthlyRate;
+let principal = emi - interest;
+
+if(principal > balance){
+    principal = balance;
+}
+
+balance -= principal;
+balanceLabels.push(i);
+balanceData.push(Math.max(balance, 0).toFixed(2));    
+
+rows += `
+<tr>
+<td>${i}</td>
+<td>${emi.toFixed(2)}</td>
+<td>${interest.toFixed(2)}</td>
+<td>${principal.toFixed(2)}</td>
+<td>${Math.max(balance,0).toFixed(2)}</td>
+</tr>`;
+}
+
+document.getElementById("scheduleBody").innerHTML = rows;
+
+if(loanChart){
+    loanChart.destroy();
+}
+
+loanChart = new Chart(document.getElementById("loanChart"),{
+
+        type:"pie",
+        data:{
+        labels:["Principal","Interest"],
+        datasets:[{
+    data:[P,totalInterest],
+    backgroundColor:["#2196F3","#FF6384"]
+}]
+    }
+});
+    
+balanceChart = new Chart(document.getElementById("balanceChart"),{
+    type:"line",
+    data:{
+        labels: balanceLabels,
+        datasets:[{
+            label:"Loan Balance",
+            data: balanceData,
+            fill:false,
+            borderWidth:2,
+            tension:0.2
+        }]
+    },
+    options:{
+        responsive:true
+    }
+});   
+}
+function resetLoan(){
+
+document.getElementById("loan").value="";
+document.getElementById("rate").value="";
+document.getElementById("years").value="";
+
+document.getElementById("result").style.display="none";
+
+document.getElementById("scheduleBody").innerHTML="";
+
+if(loanChart){
+    loanChart.destroy();
+    loanChart=null;
+}
+if(balanceChart){
+    balanceChart.destroy();
+    balanceChart = null;
+}
+    
+}
+    async function downloadPDF() {
+
+    const { jsPDF } = window.jspdf;
+
+    const pdf = new jsPDF();
+
+    pdf.setFontSize(18);
+    pdf.text("Loan Calculator Report", 20, 20);
+
+    pdf.setFontSize(12);
+    pdf.text("Loan Amount: ₹ " + document.getElementById("loan").value, 20, 40);
+    pdf.text("Interest Rate: " + document.getElementById("rate").value + "%", 20, 50);
+    pdf.text("Loan Tenure: " + document.getElementById("years").value + " Years", 20, 60);
+
+    pdf.text("Monthly EMI: ₹ " + document.getElementById("emi").textContent, 20, 80);
+    pdf.text("Total Interest: ₹ " + document.getElementById("interest").textContent, 20, 90);
+    pdf.text("Total Payment: ₹ " + document.getElementById("total").textContent, 20, 100);
+
+    pdf.save("Loan-Report.pdf");
+
+}
+   function downloadCSV() {
+
+    let csv = "Month,EMI,Interest,Principal,Balance\n";
+
+    const rows = document.querySelectorAll("#scheduleBody tr");
+
+    rows.forEach(row => {
+
+        let cols = row.querySelectorAll("td");
+
+        let data = [];
+
+        cols.forEach(col => {
+            data.push(col.innerText.replace(/,/g, ""));
+        });
+
+        csv += data.join(",") + "\n";
+
+    });
+
+    let blob = new Blob([csv], {
+        type: "text/csv;charset=utf-8;"
+    });
+
+    let link = document.createElement("a");
+
+    link.href = URL.createObjectURL(blob);
+
+    link.download = "Loan-Amortization-Schedule.csv";
+
+    document.body.appendChild(link);
+
+    link.click();
+
+    document.body.removeChild(link);
+
+} 
+    function printReport() {
+
+    const printContents = document.getElementById("result").innerHTML;
+
+    const newWindow = window.open("", "_blank");
+
+    newWindow.document.write(`
+        <html>
+        <head>
+            <title>Loan Calculator Report</title>
+            <style>
+                body{
+                    font-family:Arial,sans-serif;
+                    padding:20px;
+                }
+                table{
+                    width:100%;
+                    border-collapse:collapse;
+                }
+                th,td{
+                    border:1px solid #000;
+                    padding:8px;
+                    text-align:center;
+                }
+            </style>
+        </head>
+        <body>
+            <h2>Loan Calculator Report</h2>
+            ${printContents}
+        </body>
+        </html>
+    `);
+
+    newWindow.document.close();
+    newWindow.print();
+
+}
+ function calculatePrepayment() {
+
+    let P = parseFloat(document.getElementById("loan").value);
+    let R = parseFloat(document.getElementById("rate").value);
+    let Y = parseFloat(document.getElementById("years").value);
+    let prepayment = parseFloat(document.getElementById("prepayment").value);
+
+    if (isNaN(P) || isNaN(R) || isNaN(Y) || isNaN(prepayment)) {
+        alert("Please enter all values.");
+        return;
+    }
+
+    let monthlyRate = R / (12 * 100);
+    let months = Y * 12;
+
+    let emi = (P * monthlyRate * Math.pow(1 + monthlyRate, months)) /
+              (Math.pow(1 + monthlyRate, months) - 1);
+
+    let originalInterest = (emi * months) - P;
+
+    let newPrincipal = Math.max(P - prepayment, 0);
+
+    let newEmi = (newPrincipal * monthlyRate * Math.pow(1 + monthlyRate, months)) /
+                 (Math.pow(1 + monthlyRate, months) - 1);
+
+    let newInterest = (newEmi * months) - newPrincipal;
+
+    let interestSaved = originalInterest - newInterest;
+
+    let yearsSaved = (prepayment / emi / 12).toFixed(1);
+
+    document.getElementById("savedInterest").innerHTML =
+        interestSaved.toFixed(2);
+
+    document.getElementById("savedYears").innerHTML =
+        yearsSaved;
+
+    document.getElementById("newTenure").innerHTML =
+        (Y - yearsSaved).toFixed(1);
+
+    document.getElementById("newInterest").innerHTML =
+        newInterest.toFixed(2);
+
+    document.getElementById("prepaymentResult").style.display = "block";
+
+}
+
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+</body>
+</html>
