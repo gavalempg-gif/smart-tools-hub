@@ -182,6 +182,43 @@ border-radius:10px;">
     <canvas id="balanceChart"></canvas>
 </div>    
 </div>
+<hr style="margin:30px 0;">
+
+<h2>⚖️ Loan Comparison Calculator</h2>
+
+<div class="input-box">
+<label>Loan Amount 2 (₹)</label>
+<input type="number" id="loan2">
+</div>
+
+<div class="input-box">
+<label>Interest Rate 2 (%)</label>
+<input type="number" id="rate2">
+</div>
+
+<div class="input-box">
+<label>Loan Tenure 2 (Years)</label>
+<input type="number" id="years2">
+</div>
+
+<button onclick="compareLoans()" style="background:#14b8a6;color:white;">
+⚖️ Compare Loans
+</button>
+
+<div id="compareResult"
+style="display:none;
+margin-top:20px;
+padding:15px;
+background:#ecfeff;
+border-radius:10px;">
+
+<p><b>Loan 1 EMI:</b> ₹ <span id="emi1Compare"></span></p>
+
+<p><b>Loan 2 EMI:</b> ₹ <span id="emi2Compare"></span></p>
+
+<p><b>Difference:</b> ₹ <span id="emiDifference"></span></p>
+
+</div>
 <script>
 
 let loanChart = null;
