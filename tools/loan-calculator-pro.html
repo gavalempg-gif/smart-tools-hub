@@ -501,14 +501,15 @@ let n1 = Y1 * 12;
 
 let emi1 = (P1 * r1 * Math.pow(1 + r1, n1)) /
            (Math.pow(1 + r1, n1) - 1);
-let totalInterest1 = (emi1 * n1) - P1;
-let totalInterest2 = (emi2 * n2) - P2;
+
 
 let r2 = R2 / (12 * 100);
 let n2 = Y2 * 12;
 
 let emi2 = (P2 * r2 * Math.pow(1 + r2, n2)) /
            (Math.pow(1 + r2, n2) - 1);
+let totalInterest1 = (emi1 * n1) - P1;
+let totalInterest2 = (emi2 * n2) - P2;   
 
 document.getElementById("emi1Compare").textContent = emi1.toFixed(2);
 document.getElementById("emi2Compare").textContent = emi2.toFixed(2);
