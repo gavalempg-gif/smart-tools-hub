@@ -475,7 +475,43 @@ if(balanceChart){
     document.getElementById("prepaymentResult").style.display = "block";
 
 }
+function compareLoans(){
 
+let P1 = parseFloat(document.getElementById("loan").value);
+let R1 = parseFloat(document.getElementById("rate").value);
+let Y1 = parseFloat(document.getElementById("years").value);
+
+let P2 = parseFloat(document.getElementById("loan2").value);
+let R2 = parseFloat(document.getElementById("rate2").value);
+let Y2 = parseFloat(document.getElementById("years2").value);
+
+if(isNaN(P1) || isNaN(R1) || isNaN(Y1) ||
+   isNaN(P2) || isNaN(R2) || isNaN(Y2)){
+    alert("Please enter all loan details.");
+    return;
+}
+
+let r1 = R1 / (12 * 100);
+let n1 = Y1 * 12;
+
+let emi1 = (P1 * r1 * Math.pow(1 + r1, n1)) /
+           (Math.pow(1 + r1, n1) - 1);
+
+let r2 = R2 / (12 * 100);
+let n2 = Y2 * 12;
+
+let emi2 = (P2 * r2 * Math.pow(1 + r2, n2)) /
+           (Math.pow(1 + r2, n2) - 1);
+
+document.getElementById("emi1Compare").textContent = emi1.toFixed(2);
+document.getElementById("emi2Compare").textContent = emi2.toFixed(2);
+
+document.getElementById("emiDifference").textContent =
+Math.abs(emi1 - emi2).toFixed(2);
+
+document.getElementById("compareResult").style.display = "block";
+
+}
 </script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
