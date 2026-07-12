@@ -224,7 +224,9 @@ border-radius:10px;">
 <span id="interest2Compare"></span></p>  
 
 <p><b>🏆 Better Choice:</b>
-<span id="betterLoan"></span></p>   
+<span id="betterLoan"></span></p> 
+<p><b>💰 Interest Saving:</b>
+₹ <span id="savingCompare"></span></p>    
 
 </div>
 <script>
@@ -539,7 +541,11 @@ document.getElementById("betterLoan").innerHTML =
 document.getElementById("betterLoan").innerHTML =
 "Both Loans are Equal";
 
-}  
+} 
+let saving = Math.abs(totalInterest1 - totalInterest2);
+
+document.getElementById("savingCompare").textContent =
+saving.toFixed(2);   
 
 document.getElementById("compareResult").style.display = "block";
 
