@@ -593,6 +593,41 @@ saving.toFixed(2);
 document.getElementById("compareResult").style.display = "block";
 
 }
+function calculateEligibility(){
+
+let income = parseFloat(document.getElementById("income").value);
+let existingEmi = parseFloat(document.getElementById("existingEmi").value);
+let rate = parseFloat(document.getElementById("eligibilityRate").value);
+let years = parseFloat(document.getElementById("eligibilityYears").value);
+
+if(isNaN(income) || isNaN(existingEmi) || isNaN(rate) || isNaN(years)){
+    alert("Please fill all fields.");
+    return;
+}
+
+let maxEmi = (income * 0.5) - existingEmi;
+
+if(maxEmi <= 0){
+    alert("No loan eligibility.");
+    return;
+}
+
+let monthlyRate = rate / (12 * 100);
+let months = years * 12;
+
+let eligibleLoan =
+(maxEmi * (Math.pow(1 + monthlyRate, months) - 1)) /
+(monthlyRate * Math.pow(1 + monthlyRate, months));
+
+document.getElementById("eligibleLoan").textContent =
+eligibleLoan.toFixed(2);
+
+document.getElementById("eligibleEmi").textContent =
+maxEmi.toFixed(2);
+
+document.getElementById("eligibilityResult").style.display = "block";
+
+}    
 </script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
