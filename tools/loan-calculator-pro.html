@@ -229,6 +229,49 @@ border-radius:10px;">
 ₹ <span id="savingCompare"></span></p>    
 
 </div>
+<hr>
+
+<h2>🏠 Home Loan Eligibility Calculator</h2>
+
+<div class="input-box">
+<label>Monthly Income (₹)</label>
+<input type="number" id="income">
+</div>
+
+<div class="input-box">
+<label>Existing Monthly EMI (₹)</label>
+<input type="number" id="existingEmi">
+</div>
+
+<div class="input-box">
+<label>Interest Rate (%)</label>
+<input type="number" id="eligibilityRate">
+</div>
+
+<div class="input-box">
+<label>Loan Tenure (Years)</label>
+<input type="number" id="eligibilityYears">
+</div>
+
+<button onclick="calculateEligibility()"
+style="background:#16a34a;color:white;">
+🏠 Check Eligibility
+</button>
+
+<div id="eligibilityResult"
+style="display:none;
+margin-top:20px;
+padding:15px;
+background:#ecfdf5;
+border-radius:10px;">
+
+<p><b>Eligible Loan:</b> ₹
+<span id="eligibleLoan"></span></p>
+
+<p><b>Estimated EMI:</b> ₹
+<span id="eligibleEmi"></span></p>
+
+</div>    
 <script>
 
 let loanChart = null;
