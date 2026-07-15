@@ -740,17 +740,23 @@ document.getElementById("eligibleEmi").textContent =
 maxEmi.toFixed(2);
 
 document.getElementById("eligibilityResult").style.display = "block";
-
-}
 window.onload = function () {
 
-    if (localStorage.getItem("theme") === "dark") {
+    const savedTheme = localStorage.getItem("theme");
+
+    if (savedTheme === "dark") {
 
         document.body.classList.add("dark-mode");
         document.getElementById("themeBtn").innerHTML = "☀️ Light Mode";
 
+    } else {
+
+        document.body.classList.remove("dark-mode");
+        document.getElementById("themeBtn").innerHTML = "🌙 Dark Mode";
+
     }
 
+    
 };   
 function toggleTheme() {
 
