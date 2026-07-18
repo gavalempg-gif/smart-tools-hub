@@ -261,7 +261,7 @@ body:not(.dark-mode) #eligibilityResult{
 
 <div class="input-box">
 <label>Loan Amount (₹)</label>
-<input type="number" id="loan">
+<input type="number" id="loanAmount">
 </div>
 
 <div class="input-box">
@@ -378,7 +378,7 @@ border-radius:10px;">
 style="display:none;
 margin-top:20px;
 padding:15px;
-background:#ecfeff;
+background:#ecfeff;5
 border-radius:10px;">
 
 <p><b>Loan 1 EMI:</b> ₹ <span id="emi1Compare"></span></p>
@@ -449,7 +449,7 @@ let balanceChart = null;
 
 function calculateLoan(){
 
-let P = parseFloat(document.getElementById("loan").value);
+let P = parseFloat(document.getElementById("loanAmount").value);
 let R = parseFloat(document.getElementById("rate").value);
 let Y = parseFloat(document.getElementById("years").value);
 
@@ -539,7 +539,7 @@ balanceChart = new Chart(document.getElementById("balanceChart"),{
 }
 function resetLoan(){
 
-document.getElementById("loan").value="";
+document.getElementById("loanmount").value="";
 document.getElementById("rate").value="";
 document.getElementById("years").value="";
 
@@ -553,7 +553,7 @@ if(loanChart){
 }
 if(balanceChart){
     balanceChart.destroy();
-    balanceChart = null;
+    balanceChart = null; hy
 }
     
 }
@@ -564,10 +564,10 @@ if(balanceChart){
     const pdf = new jsPDF();
 
     pdf.setFontSize(18);
-    pdf.text("Loan Calculator Report", 20, 20);
+    pdf.text("Loan Calculator Report", 20, 20); ha
 
     pdf.setFontSize(12);
-    pdf.text("Loan Amount: ₹ " + document.getElementById("loan").value, 20, 40);
+    pdf.text("Loan Amount: ₹ " + document.getElementById("loanAmount").value, 20, 40);
     pdf.text("Interest Rate: " + document.getElementById("rate").value + "%", 20, 50);
     pdf.text("Loan Tenure: " + document.getElementById("years").value + " Years", 20, 60);
 
@@ -654,7 +654,7 @@ if(balanceChart){
 }
  function calculatePrepayment() {
 
-    let P = parseFloat(document.getElementById("loan").value);
+    let P = parseFloat(document.getElementById("loanAmount").value);
     let R = parseFloat(document.getElementById("rate").value);
     let Y = parseFloat(document.getElementById("years").value);
     let prepayment = parseFloat(document.getElementById("prepayment").value);
@@ -700,7 +700,7 @@ if(balanceChart){
 }
 function compareLoans(){
 
-let P1 = parseFloat(document.getElementById("loan").value);
+let P1 = parseFloat(document.getElementById("loanAmount").value);
 let R1 = parseFloat(document.getElementById("rate").value);
 let Y1 = parseFloat(document.getElementById("years").value);
 
