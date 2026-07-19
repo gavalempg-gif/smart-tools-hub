@@ -378,7 +378,7 @@ border-radius:10px;">
 style="display:none;
 margin-top:20px;
 padding:15px;
-background:#ecfeff;5
+background:#ecfeff;
 border-radius:10px;">
 
 <p><b>Loan 1 EMI:</b> ₹ <span id="emi1Compare"></span></p>
@@ -553,7 +553,7 @@ if(loanChart){
 }
 if(balanceChart){
     balanceChart.destroy();
-    balanceChart = null; hy
+    balanceChart = null;
 }
     
 }
@@ -564,7 +564,7 @@ if(balanceChart){
     const pdf = new jsPDF();
 
     pdf.setFontSize(18);
-    pdf.text("Loan Calculator Report", 20, 20); ha
+    pdf.text("Loan Calculator Report", 20, 20);
 
     pdf.setFontSize(12);
     pdf.text("Loan Amount: ₹ " + document.getElementById("loanAmount").value, 20, 40);
