@@ -277,14 +277,17 @@ body:not(.dark-mode) #eligibilityResult{
 <button id="calcBtn" onclick="calculateLoan()">Calculate EMI</button>
 
 <button id="resetBtn" onclick="resetLoan()">Reset</button>
-<button onclick="downloadPDF()">📄 Download PDF</button> 
+<button onclick="downloadPDF()">
+📄 Download PDF
+</button>    
     
 <button onclick="downloadCSV()" style="background:#10b981;color:white;">
 📊 Download Excel (CSV)
+</button>    
+    
 <button onclick="printReport()" style="background:#f59e0b;color:white;">
 🖨️ Print Report
 </button> 
-</button>
     <hr style="margin:30px 0;">
 <div id="prepayment">
 <h2>💰 Loan Prepayment Calculator</h2>
@@ -519,7 +522,9 @@ loanChart = new Chart(document.getElementById("loanChart"),{
 }]
     }
 });
-    
+if(balanceChart){
+    balanceChart.destroy();
+}    
 balanceChart = new Chart(document.getElementById("balanceChart"),{
     type:"line",
     data:{
