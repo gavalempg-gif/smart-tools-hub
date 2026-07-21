@@ -662,7 +662,15 @@ if(balanceChart){
     let P = parseFloat(document.getElementById("loanAmount").value);
     let R = parseFloat(document.getElementById("rate").value);
     let Y = parseFloat(document.getElementById("years").value);
-    let prepayment = parseFloat(document.getElementById("prepayment").value);
+    let prepaymentInput = document.getElementById("prepayment");
+
+    if (!prepaymentInput) {
+    alert("Prepayment input not found");
+    return;
+    }
+
+    let prepayment = Number(prepaymentInput.value.trim());
+    alert("Prepayment Value = " + prepaymentInput.value);
     alert(
     "P = " + P +
     "\nR = " + R +
