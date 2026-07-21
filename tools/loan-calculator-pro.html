@@ -686,16 +686,17 @@ if(balanceChart){
 
     let interestSaved = originalInterest - newInterest;
 
-    let yearsSaved = (prepayment / emi / 12).toFixed(1);
+    let yearsSaved = prepayment / emi / 12;
 
     document.getElementById("savedInterest").innerHTML =
         interestSaved.toFixed(2);
 
     document.getElementById("savedYears").innerHTML =
-        yearsSaved;
+    yearsSaved.toFixed(1);
+    let newTenure = Y - yearsSaved;
 
     document.getElementById("newTenure").innerHTML =
-        (Y - yearsSaved).toFixed(1);
+    newTenure.toFixed(1);
 
     document.getElementById("newInterest").innerHTML =
         newInterest.toFixed(2);
