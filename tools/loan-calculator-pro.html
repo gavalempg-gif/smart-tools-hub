@@ -715,6 +715,12 @@ if(balanceChart){
 
     document.getElementById("newInterest").innerHTML =
     newInterest.toFixed(2);
+    document.getElementById("savedInterest").innerHTML = interestSaved.toFixed(2);
+    document.getElementById("savedYears").innerHTML = yearsSaved.toFixed(1);
+    document.getElementById("newTenure").innerHTML = newTenure.toFixed(1);
+    document.getElementById("newInterest").innerHTML = newInterest.toFixed(2);
+
+    alert("Interest Saved = " + interestSaved); 
     document.getElementById("prepaymentResult").style.display = "block";
 
     alert("Prepayment function completed");
