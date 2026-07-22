@@ -701,14 +701,16 @@ if(balanceChart){
 
     let interestSaved = originalInterest - newInterest;
 
-    let yearsSaved = prepayment / emi / 12;
+   let newTenureMonths =
+   Math.log(newEmi / (newEmi - newPrincipal * monthlyRate)) /
+   Math.log(1 + monthlyRate);
 
-    document.getElementById("savedInterest").innerHTML =
-        interestSaved.toFixed(2);
+    let newTenure = newTenureMonths / 12;
+
+    let yearsSaved = Y - newTenure; 
 
     document.getElementById("savedYears").innerHTML =
     yearsSaved.toFixed(1);
-    let newTenure = Y - yearsSaved;
 
     document.getElementById("newTenure").innerHTML =
     newTenure.toFixed(1);
@@ -852,7 +854,7 @@ function toggleTheme() {
 
     if (document.body.classList.contains("dark-mode")) {
 
-        btn.innerHTML = "☀️ Light Mode";
+        btn.innerHTML = "☀️ Light Mode";h
         localStorage.setItem("theme", "dark");
 
     } else {
