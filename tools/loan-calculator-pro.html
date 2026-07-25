@@ -669,7 +669,7 @@ if(balanceChart){
     return;
     }
 
-    alert("Value = " + prepaymentInput.value);
+    
 
     let prepayment = parseFloat(prepaymentInput.value);
 
@@ -692,42 +692,45 @@ if(balanceChart){
 
     let originalInterest = (emi * months) - P;
 
-    let newPrincipal = Math.max(P - prepayment, 0);
+    let balance = P;
+   let totalInterestPaid = 0;
+   let month = 0;
 
-    let newEmi = (newPrincipal * monthlyRate * Math.pow(1 + monthlyRate, months)) /
-                 (Math.pow(1 + monthlyRate, months) - 1);
+    while (balance > 1 && month < 1000) {
 
-    let newInterest = (newEmi * months) - newPrincipal;
+    let interest = balance * monthlyRate;
+    let principal = emi - interest;
 
-    let interestSaved = originalInterest - newInterest;
+    if (principal > balance) {
+        principal = balance;
+    }
 
-   let newTenureMonths =
-   Math.log(newEmi / (newEmi - newPrincipal * monthlyRate)) /
-   Math.log(1 + monthlyRate);
+    balance -= principal;
+    totalInterestPaid += interest;
+    month++;
 
-    let newTenure = newTenureMonths / 12;
+    if (month % 12 === 0 && balance > 0) {
+        balance = Math.max(balance - prepayment, 0);
+    }
+}
 
-    let yearsSaved = Y - newTenure; 
+let newTenure = month / 12;
+let yearsSaved = Y - newTenure;
+let interestSaved = originalInterest - totalInterestPaid;
 
-    document.getElementById("savedYears").innerHTML =
-    yearsSaved.toFixed(1);
+document.getElementById("savedInterest").innerHTML =
+interestSaved.toFixed(2);
 
-    document.getElementById("newTenure").innerHTML =
-    newTenure.toFixed(1);
+document.getElementById("savedYears").innerHTML =
+yearsSaved.toFixed(2);
 
-    document.getElementById("newInterest").innerHTML =
-    newInterest.toFixed(2);
-    document.getElementById("savedInterest").innerHTML = interestSaved.toFixed(2);
-    document.getElementById("savedYears").innerHTML = yearsSaved.toFixed(1);
-    document.getElementById("newTenure").innerHTML = newTenure.toFixed(1);
-    document.getElementById("newInterest").innerHTML = newInterest.toFixed(2);
+document.getElementById("newTenure").innerHTML =
+newTenure.toFixed(2);
 
-    alert("Interest Saved = " + interestSaved); 
-    document.getElementById("prepaymentResult").style.display = "block";
+document.getElementById("newInterest").innerHTML =
+totalInterestPaid.toFixed(2);
 
-    alert("Prepayment function completed");
-    document.getElementById("prepaymentResult").style.display = "block";
-
+document.getElementById("prepaymentResult").style.display = "block";
 }
 function compareLoans(){
 
@@ -784,7 +787,7 @@ document.getElementById("betterLoan").innerHTML =
 
 document.getElementById("betterLoan").innerHTML =
 "Both Loans are Equal";
-
+df
 } 
 let saving = Math.abs(totalInterest1 - totalInterest2);
 
