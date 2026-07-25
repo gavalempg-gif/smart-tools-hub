@@ -729,7 +729,11 @@ newTenure.toFixed(2);
 
 document.getElementById("newInterest").innerHTML =
 totalInterestPaid.toFixed(2);
-
+// Update main result after prepayment
+document.getElementById("emi").innerHTML = emi.toFixed(2);
+document.getElementById("interest").innerHTML = newInterest.toFixed(2);
+document.getElementById("total").innerHTML =
+    (P + newInterest).toFixed(2);
 document.getElementById("prepaymentResult").style.display = "block";
 }
 function compareLoans(){
