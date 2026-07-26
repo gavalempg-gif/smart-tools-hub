@@ -1031,13 +1031,59 @@ function calculateCIBIL() {
     }
 
     let stampRate = 0;
-    let registration = 30000;
+let registration = 30000;
 
-    if (state === "gujarat") {
-        stampRate = 4.9;
-    } else if (state === "maharashtra") {
-        stampRate = 5;
-    }
+switch (state) {
+
+case "gujarat":
+    stampRate = 4.9;
+    registration = 30000;
+    break;
+
+case "maharashtra":
+    stampRate = 5.0;
+    registration = 30000;
+    break;
+
+case "rajasthan":
+    stampRate = 6.0;
+    registration = 25000;
+    break;
+
+case "madhya_pradesh":
+    stampRate = 7.5;
+    registration = 25000;
+    break;
+
+case "uttar_pradesh":
+    stampRate = 7.0;
+    registration = 30000;
+    break;
+
+case "delhi":
+    stampRate = 6.0;
+    registration = 30000;
+    break;
+
+case "haryana":
+    stampRate = 5.0;
+    registration = 25000;
+    break;
+
+case "punjab":
+    stampRate = 6.0;
+    registration = 25000;
+    break;
+
+case "jharkhand":
+    stampRate = 4.0;
+    registration = 30000;
+    break;
+
+default:
+    stampRate = 5.0;
+    registration = 30000;
+}
 
     let stampDuty = (propertyValue * stampRate) / 100;
     let totalCost = stampDuty + registration;
