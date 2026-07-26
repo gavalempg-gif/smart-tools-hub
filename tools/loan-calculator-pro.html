@@ -902,7 +902,22 @@ function toggleTheme() {
     
     }
     }
+function calculateTaxBenefit() {
 
+    let interest = parseFloat(document.getElementById("taxInterest").value) || 0;
+    let principal = parseFloat(document.getElementById("taxPrincipal").value) || 0;
+
+    let benefit80C = Math.min(principal, 150000);
+    let benefit24B = Math.min(interest, 200000);
+
+    let totalBenefit = benefit80C + benefit24B;
+
+    document.getElementById("benefit80C").textContent = benefit80C.toLocaleString("en-IN");
+    document.getElementById("benefit24B").textContent = benefit24B.toLocaleString("en-IN");
+    document.getElementById("totalTaxBenefit").textContent = totalBenefit.toLocaleString("en-IN");
+
+    document.getElementById("taxResult").style.display = "block";
+}
     
 </script>
 
