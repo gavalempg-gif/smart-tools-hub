@@ -658,75 +658,80 @@ if(balanceChart){
 
 }
  function calculatePrepayment() {
-    
     let P = parseFloat(document.getElementById("loanAmount").value);
     let R = parseFloat(document.getElementById("rate").value);
     let Y = parseFloat(document.getElementById("years").value);
-    let prepaymentInput = document.getElementById("prepayment");
+    let prepayment = parseFloat(document.getElementById("prepayment").value);
 
-    if (!prepaymentInput) {
-    alert("Prepayment input not found");
-    return;
-    }
-
-    
-
-    let prepayment = parseFloat(prepaymentInput.value);
-
-    if (!prepayment || prepayment <= 0) {
-    alert("Please enter Yearly Prepayment Amount");
-    prepaymentInput.focus();
-    return;
-}
-    
-    if (isNaN(P) || isNaN(R) || isNaN(Y) || isNaN(prepayment)) {
-        alert("Please enter all values.");
+    if (isNaN(P) || isNaN(R) || isNaN(Y) || isNaN(prepayment) || P <= 0 || R <= 0 || Y <= 0 || prepayment <= 0) {
+        alert("Please enter valid values.");
         return;
     }
 
     let monthlyRate = R / (12 * 100);
-    let months = Y * 12;
+    let totalMonths = Math.round(Y * 12);
 
-    let emi = (P * monthlyRate * Math.pow(1 + monthlyRate, months)) /
-              (Math.pow(1 + monthlyRate, months) - 1);
+    let emi = (P * monthlyRate * Math.pow(1 + monthlyRate, totalMonths)) /
+              (Math.pow(1 + monthlyRate, totalMonths) - 1);
 
-    let originalInterest = (emi * months) - P;
+    let originalTotalPayment = emi * totalMonths;
+    let originalInterest = originalTotalPayment - P;
 
     let balance = P;
-   let totalInterestPaid = 0;
-   let month = 0;
+    let month = 0;
+    let totalInterestPaid = 0;
 
-    while (balance > 1 && month < 1000) {
+    while (balance > 0 && month < 1000) {
+        month++;
 
-    let interest = balance * monthlyRate;
-    let principal = emi - interest;
+        let interest = balance * monthlyRate;
+        let principal = emi - interest;
 
-    if (principal > balance) {
-        principal = balance;
+        if (principal > balance) {
+            principal = balance;
+        }
+
+        balance -= principal;
+        totalInterestPaid += interest;
+
+        if (month % 12 === 0 && balance > 0) {
+            balance = Math.max(balance - prepayment, 0);
+        }
     }
 
-    balance -= principal;
-    totalInterestPaid += interest;
-    month++;
+    let newTenure = month / 12;
+    let yearsSaved = Y - newTenure;
+    let interestSaved = originalInterest - totalInterestPaid;
+    let newTotalPayment = P + totalInterestPaid;
 
-    if (month % 12 === 0 && balance > 0) {
-        balance = Math.max(balance - prepayment, 0);
+    document.getElementById("savedInterest").innerHTML = interestSaved.toFixed(2);
+    document.getElementById("savedYears").innerHTML = yearsSaved.toFixed(2);
+    document.getElementById("newTenure").innerHTML = newTenure.toFixed(2);
+    document.getElementById("newInterest").innerHTML = totalInterestPaid.toFixed(2);
+
+    document.getElementById("emi").textContent = emi.toFixed(2);
+    document.getElementById("interest").textContent = totalInterestPaid.toFixed(2);
+    document.getElementById("total").textContent = newTotalPayment.toFixed(2);
+
+    document.getElementById("prepaymentResult").style.display = "block";
+    document.getElementById("result").style.display = "block";
+
+    if (loanChart) {
+        loanChart.destroy();
     }
+
+    loanChart = new Chart(document.getElementById("loanChart"), {
+        type: "pie",
+        data: {
+            labels: ["Principal", "Interest Paid"],
+            datasets: [{
+                data: [P, totalInterestPaid],
+                backgroundColor: ["#2196F3", "#FF6384"]
+            }]
+        }
+    });
 }
-
-let newTenure = month / 12;
-let yearsSaved = Y - newTenure;
-let interestSaved = originalInterest - totalInterestPaid;
-
-document.getElementById("savedInterest").innerHTML =
-interestSaved.toFixed(2);
-
-document.getElementById("savedYears").innerHTML =
-yearsSaved.toFixed(2);
-
-document.getElementById("newTenure").innerHTML =
-newTenure.toFixed(2);
-
+ 
 document.getElementById("newInterest").innerHTML =
 totalInterestPaid.toFixed(2);
 // Update main result after prepayment
