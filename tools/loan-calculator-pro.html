@@ -947,7 +947,49 @@ function calculateTaxBenefit() {
 
     document.getElementById("taxResult").style.display = "block";
 }
-    
+function calculateCIBIL() {
+
+    let score = parseInt(document.getElementById("cibilScore").value);
+
+    if (isNaN(score) || score < 300 || score > 900) {
+        alert("Please enter a CIBIL score between 300 and 900.");
+        return;
+    }
+
+    let rating = "";
+    let chance = "";
+    let interest = "";
+    let advice = "";
+
+    if (score >= 750) {
+        rating = "🟢 Excellent";
+        chance = "95%+";
+        interest = "Best Interest Rate";
+        advice = "Excellent! Maintain timely EMI payments.";
+    } else if (score >= 650) {
+        rating = "🟡 Good";
+        chance = "75%";
+        interest = "Normal Interest Rate";
+        advice = "Pay EMIs on time and keep credit utilization low.";
+    } else if (score >= 550) {
+        rating = "🟠 Fair";
+        chance = "50%";
+        interest = "Higher Interest Rate";
+        advice = "Reduce outstanding loans and improve repayment history.";
+    } else {
+        rating = "🔴 Poor";
+        chance = "Low";
+        interest = "Loan approval may be difficult";
+        advice = "Improve your credit score before applying for a loan.";
+    }
+
+    document.getElementById("cibilRating").textContent = rating;
+    document.getElementById("loanChance").textContent = chance;
+    document.getElementById("interestRate").textContent = interest;
+    document.getElementById("cibilAdvice").textContent = advice;
+
+    document.getElementById("cibilResult").style.display = "block";
+}    
 </script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
