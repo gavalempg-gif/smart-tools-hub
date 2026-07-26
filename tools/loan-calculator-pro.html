@@ -732,29 +732,7 @@ if(balanceChart){
     });
 }
  
-document.getElementById("newInterest").innerHTML =
-totalInterestPaid.toFixed(2);
-// Update main result after prepayment
-document.getElementById("emi").innerHTML = emi.toFixed(2);
-document.getElementById("interest").innerHTML = newInterest.toFixed(2);
-document.getElementById("total").innerHTML =
-    (P + newInterest).toFixed(2);
-document.getElementById("prepaymentResult").style.display = "block";
-if (loanChart) {
-    loanChart.destroy();
-}
 
-loanChart = new Chart(document.getElementById("loanChart"), {
-    type: "pie",
-    data: {
-        labels: ["Principal", "New Interest"],
-        datasets: [{
-            data: [P, newInterest],
-            backgroundColor: ["#2196F3", "#FF6384"]
-        }]
-    }
-});    
-}
 function compareLoans(){
 
 let P1 = parseFloat(document.getElementById("loanAmount").value);
