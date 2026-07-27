@@ -1,1 +1,803 @@
+<h2>📊 CIBIL Score Calculator</h2>
 
+<div class="input-box">
+<label>Enter Your CIBIL Score</label>
+<input type="number" id="cibilScore" min="300" max="900" placeholder="750">
+</div>
+
+<button onclick="calculateCIBIL()"
+style="background:#2563eb;color:white;">
+📈 Check CIBIL Score
+</button>
+
+<div id="cibilResult"
+style="display:none;margin-top:20px;padding:15px;background:#eff6ff;border-radius:10px;">
+
+<p><b>Rating:</b> <span id="cibilRating"></span></p>
+
+<p><b>Loan Approval Chance:</b> <span id="loanChance"></span></p>
+
+<p><b>Estimated Interest:</b> <span id="interestRate"></span></p>
+
+<p><b>Suggestion:</b> <span id="cibilAdvice"></span></p>
+
+</div>
+
+</div>
+ <hr style="margin:30px 0;">
+
+<div id="stampCalculator">
+
+<h2>🏠 Stamp Duty & Registration Calculator</h2>
+
+<label>Property Value (₹)</label>
+<input type="number" id="propertyValue" placeholder="5000000">
+
+<label>Select State</label>
+<select id="state">
+    <option value="gujarat">Gujarat</option>
+    <option value="maharashtra">Maharashtra</option>
+</select>
+
+<button onclick="calculateStampDuty()">
+📋 Calculate Stamp Duty
+</button>
+
+<div id="stampResult" style="display:none;margin-top:20px;padding:15px;background:#f0fdf4;border-radius:10px;">
+
+<p><b>Stamp Duty:</b> ₹ <span id="stampDuty"></span></p>
+
+<p><b>Registration Charge:</b> ₹ <span id="registrationCharge"></span></p>
+
+<p><b>Total Cost:</b> ₹ <span id="totalCost"></span></p>
+
+</div>
+
+</div>   
+<h2>🏠 Home Loan Eligibility Calculator</h2>
+
+<div class="input-box">
+<label>Monthly Income (₹)</label>
+<input type="number" id="income">
+</div>
+
+<div class="input-box">
+<label>Existing Monthly EMI (₹)</label>
+<input type="number" id="existingEmi">
+</div>
+
+<div class="input-box">
+<label>Interest Rate (%)</label>
+<input type="number" id="eligibilityRate">
+</div>
+
+<div class="input-box">
+<label>Loan Tenure (Years)</label>
+<input type="number" id="eligibilityYears">
+</div>
+
+<button onclick="calculateEligibility()"
+style="background:#16a34a;color:white;">
+🏠 Check Eligibility
+</button>
+
+<div id="eligibilityResult"
+style="display:none;
+margin-top:20px;
+padding:15px;
+background:#ecfdf5;
+border-radius:10px;">
+
+<p><b>Eligible Loan:</b> ₹
+<span id="eligibleLoan"></span></p>
+
+<p><b>Estimated EMI:</b> ₹
+<span id="eligibleEmi"></span></p>
+
+</div>    
+<script>
+
+let loanChart = null;
+let balanceChart = null;   
+
+function calculateLoan(){
+
+let P = parseFloat(document.getElementById("loanAmount").value);
+let R = parseFloat(document.getElementById("rate").value);
+let Y = parseFloat(document.getElementById("years").value);
+
+if(isNaN(P) || isNaN(R) || isNaN(Y) || P<=0 || R<=0 || Y<=0){
+    alert("Please enter valid values.");
+    return;
+}
+
+let monthlyRate = R / (12 * 100);
+let months = Y * 12;
+
+let emi = (P * monthlyRate * Math.pow(1 + monthlyRate, months)) /
+          (Math.pow(1 + monthlyRate, months) - 1);
+
+let totalPayment = emi * months;
+let totalInterest = totalPayment - P;
+
+document.getElementById("emi").textContent = emi.toFixed(2);
+document.getElementById("interest").textContent = totalInterest.toFixed(2);
+document.getElementById("total").textContent = totalPayment.toFixed(2);
+
+document.getElementById("result").style.display = "block";
+
+let balance = P;
+let rows = "";
+
+let balanceLabels = [];
+let balanceData = [];
+
+for(let i=1;i<=months;i++){
+
+let interest = balance * monthlyRate;
+let principal = emi - interest;
+
+if(principal > balance){
+    principal = balance;
+}
+
+balance -= principal;
+balanceLabels.push(i);
+balanceData.push(Math.max(balance, 0).toFixed(2));    
+
+rows += `
+<tr>
+<td>${i}</td>
+<td>${emi.toFixed(2)}</td>
+<td>${interest.toFixed(2)}</td>
+<td>${principal.toFixed(2)}</td>
+<td>${Math.max(balance,0).toFixed(2)}</td>
+</tr>`;
+}
+
+document.getElementById("scheduleBody").innerHTML = rows;
+
+if(loanChart){
+    loanChart.destroy();
+}
+
+loanChart = new Chart(document.getElementById("loanChart"),{
+
+        type:"pie",
+        data:{
+        labels:["Principal","Interest"],
+        datasets:[{
+    data:[P,totalInterest],
+    backgroundColor:["#2196F3","#FF6384"]
+}]
+    }
+});
+if(balanceChart){
+    balanceChart.destroy();
+}    
+balanceChart = new Chart(document.getElementById("balanceChart"),{
+    type:"line",
+    data:{
+        labels: balanceLabels,
+        datasets:[{
+            label:"Loan Balance",
+            data: balanceData,
+            fill:false,
+            borderWidth:2,
+            tension:0.2
+        }]
+    },
+    options:{
+        responsive:true
+    }
+});   
+}
+function resetLoan(){
+
+document.getElementById("loanAmount").value="";
+document.getElementById("rate").value="";
+document.getElementById("years").value="";
+
+document.getElementById("result").style.display="none";
+
+document.getElementById("scheduleBody").innerHTML="";
+
+if(loanChart){
+    loanChart.destroy();
+    loanChart=null;
+}
+if(balanceChart){
+    balanceChart.destroy();
+    balanceChart = null;
+}
+    
+}
+    async function downloadPDF() {
+
+    const { jsPDF } = window.jspdf;
+
+    const pdf = new jsPDF();
+
+    pdf.setFontSize(18);
+    pdf.text("Loan Calculator Report", 20, 20);
+
+    pdf.setFontSize(12);
+    pdf.text("Loan Amount: ₹ " + document.getElementById("loanAmount").value, 20, 40);
+    pdf.text("Interest Rate: " + document.getElementById("rate").value + "%", 20, 50);
+    pdf.text("Loan Tenure: " + document.getElementById("years").value + " Years", 20, 60);
+
+    pdf.text("Monthly EMI: ₹ " + document.getElementById("emi").textContent, 20, 80);
+    pdf.text("Total Interest: ₹ " + document.getElementById("interest").textContent, 20, 90);
+    pdf.text("Total Payment: ₹ " + document.getElementById("total").textContent, 20, 100);
+
+    pdf.save("Loan-Report.pdf");
+
+}
+   function downloadCSV() {
+
+    let csv = "Month,EMI,Interest,Principal,Balance\n";
+
+    const rows = document.querySelectorAll("#scheduleBody tr");
+
+    rows.forEach(row => {
+
+        let cols = row.querySelectorAll("td");
+
+        let data = [];
+
+        cols.forEach(col => {
+            data.push(col.innerText.replace(/,/g, ""));
+        });
+
+        csv += data.join(",") + "\n";
+
+    });
+
+    let blob = new Blob([csv], {
+        type: "text/csv;charset=utf-8;"
+    });
+
+    let link = document.createElement("a");
+
+    link.href = URL.createObjectURL(blob);
+
+    link.download = "Loan-Amortization-Schedule.csv";
+
+    document.body.appendChild(link);
+
+    link.click();
+
+    document.body.removeChild(link);
+
+} 
+    function printReport() {
+
+    const printContents = document.getElementById("result").innerHTML;
+
+    const newWindow = window.open("", "_blank");
+
+    newWindow.document.write(`
+        <html>
+        <head>
+            <title>Loan Calculator Report</title>
+            <style>
+                body{
+                    font-family:Arial,sans-serif;
+                    padding:20px;
+                }
+                table{
+                    width:100%;
+                    border-collapse:collapse;
+                }
+                th,td{
+                    border:1px solid #000;
+                    padding:8px;
+                    text-align:center;
+                }
+            </style>
+        </head>
+        <body>
+            <h2>Loan Calculator Report</h2>
+            ${printContents}
+        </body>
+        </html>
+    `);
+
+    newWindow.document.close();
+    newWindow.print();
+
+}
+ function calculatePrepayment() {
+    let P = parseFloat(document.getElementById("loanAmount").value);
+    let R = parseFloat(document.getElementById("rate").value);
+    let Y = parseFloat(document.getElementById("years").value);
+    let prepayment = parseFloat(document.getElementById("prepayment").value);
+
+    if (isNaN(P) || isNaN(R) || isNaN(Y) || isNaN(prepayment) || P <= 0 || R <= 0 || Y <= 0 || prepayment <= 0) {
+        alert("Please enter valid values.");
+        return;
+    }
+
+    let monthlyRate = R / (12 * 100);
+    let totalMonths = Math.round(Y * 12);
+
+    let emi = (P * monthlyRate * Math.pow(1 + monthlyRate, totalMonths)) /
+              (Math.pow(1 + monthlyRate, totalMonths) - 1);
+
+    let originalTotalPayment = emi * totalMonths;
+    let originalInterest = originalTotalPayment - P;
+
+    let balance = P;
+    let month = 0;
+    let totalInterestPaid = 0;
+
+    while (balance > 0 && month < 1000) {
+        month++;
+
+        let interest = balance * monthlyRate;
+        let principal = emi - interest;
+
+        if (principal > balance) {
+            principal = balance;
+        }
+
+        balance -= principal;
+        totalInterestPaid += interest;
+
+        if (month % 12 === 0 && balance > 0) {
+            balance = Math.max(balance - prepayment, 0);
+        }
+    }
+
+    let newTenure = month / 12;
+    let yearsSaved = Y - newTenure;
+    let interestSaved = originalInterest - totalInterestPaid;
+    let newTotalPayment = P + totalInterestPaid;
+
+    document.getElementById("savedInterest").innerHTML = interestSaved.toFixed(2);
+    document.getElementById("savedYears").innerHTML = yearsSaved.toFixed(2);
+    document.getElementById("newTenure").innerHTML = newTenure.toFixed(2);
+    document.getElementById("newInterest").innerHTML = totalInterestPaid.toFixed(2);
+
+    document.getElementById("emi").textContent = emi.toFixed(2);
+    document.getElementById("interest").textContent = totalInterestPaid.toFixed(2);
+    document.getElementById("total").textContent = newTotalPayment.toFixed(2);
+
+    document.getElementById("prepaymentResult").style.display = "block";
+    document.getElementById("result").style.display = "block";
+
+    if (loanChart) {
+        loanChart.destroy();
+    }
+
+    loanChart = new Chart(document.getElementById("loanChart"), {
+        type: "pie",
+        data: {
+            labels: ["Principal", "Interest Paid"],
+            datasets: [{
+                data: [P, totalInterestPaid],
+                backgroundColor: ["#2196F3", "#FF6384"]
+            }]
+        }
+    });
+}
+ 
+
+function compareLoans(){
+alert("Compare function started");
+let P1 = parseFloat(document.getElementById("loanAmount").value);
+let R1 = parseFloat(document.getElementById("rate").value);
+let Y1 = parseFloat(document.getElementById("years").value);
+
+let P2 = parseFloat(document.getElementById("loan2").value);
+let R2 = parseFloat(document.getElementById("rate2").value);
+let Y2 = parseFloat(document.getElementById("years2").value);
+
+if(isNaN(P1) || isNaN(R1) || isNaN(Y1) ||
+   isNaN(P2) || isNaN(R2) || isNaN(Y2)){
+    alert("Please enter all loan details.");
+    return;
+}
+
+let r1 = R1 / (12 * 100);
+let n1 = Y1 * 12;
+
+let emi1 = (P1 * r1 * Math.pow(1 + r1, n1)) /
+           (Math.pow(1 + r1, n1) - 1);
+
+
+let r2 = R2 / (12 * 100);
+let n2 = Y2 * 12;
+
+let emi2 = (P2 * r2 * Math.pow(1 + r2, n2)) /
+           (Math.pow(1 + r2, n2) - 1);
+let totalInterest1 = (emi1 * n1) - P1;
+let totalInterest2 = (emi2 * n2) - P2;   
+
+document.getElementById("emi1Compare").textContent = emi1.toFixed(2);
+document.getElementById("emi2Compare").textContent = emi2.toFixed(2);
+
+document.getElementById("emiDifference").textContent =
+Math.abs(emi1 - emi2).toFixed(2);
+document.getElementById("interest1Compare").textContent =
+totalInterest1.toFixed(2);
+
+document.getElementById("interest2Compare").textContent =
+totalInterest2.toFixed(2);
+if(totalInterest1 < totalInterest2){
+
+document.getElementById("betterLoan").innerHTML =
+"✅ Loan 1 is Better (Lower Interest)";
+
+}else if(totalInterest2 < totalInterest1){
+
+document.getElementById("betterLoan").innerHTML =
+"✅ Loan 2 is Better (Lower Interest)";
+
+}else{
+
+document.getElementById("betterLoan").innerHTML =
+"Both Loans are Equal";
+
+} 
+let saving = Math.abs(totalInterest1 - totalInterest2);
+
+document.getElementById("savingCompare").textContent =
+saving.toFixed(2);   
+
+document.getElementById("compareResult").style.display = "block";
+
+}
+function calculateEligibility(){
+
+let income = parseFloat(document.getElementById("income").value);
+let existingEmi = parseFloat(document.getElementById("existingEmi").value);
+let rate = parseFloat(document.getElementById("eligibilityRate").value);
+let years = parseFloat(document.getElementById("eligibilityYears").value);
+
+if(isNaN(income) || isNaN(existingEmi) || isNaN(rate) || isNaN(years)){
+    alert("Please fill all fields.");
+    return;
+}
+
+let maxEmi = (income * 0.5) - existingEmi;
+
+if(maxEmi <= 0){
+    alert("No loan eligibility.");
+    return;
+}
+
+let monthlyRate = rate / (12 * 100);
+let months = years * 12;
+
+let eligibleLoan =
+(maxEmi * (Math.pow(1 + monthlyRate, months) - 1)) /
+(monthlyRate * Math.pow(1 + monthlyRate, months));
+
+document.getElementById("eligibleLoan").textContent =
+eligibleLoan.toFixed(2);
+
+document.getElementById("eligibleEmi").textContent =
+maxEmi.toFixed(2);
+
+document.getElementById("eligibilityResult").style.display = "block";
+}   
+window.onload = function () {
+
+    const savedTheme = localStorage.getItem("theme");
+
+    if (savedTheme === "dark") {
+
+        document.body.classList.add("dark-mode");
+        document.getElementById("themeBtn").innerHTML = "☀️ Light Mode";
+
+    } else {
+
+        document.body.classList.remove("dark-mode");
+        document.getElementById("themeBtn").innerHTML = "🌙 Dark Mode";
+
+    }
+
+    
+};   
+function toggleTheme() {
+
+    document.body.classList.toggle("dark-mode");
+
+    const btn = document.getElementById("themeBtn");
+
+    if (document.body.classList.contains("dark-mode")) {
+
+        btn.innerHTML = "☀️ Light Mode";
+        localStorage.setItem("theme", "dark");
+
+    } else {
+
+        btn.innerHTML = "🌙 Dark Mode";
+        localStorage.setItem("theme", "light");
+
+    
+    }
+    }
+function calculateTaxBenefit() {
+
+    let interest = parseFloat(document.getElementById("taxInterest").value) || 0;
+    let principal = parseFloat(document.getElementById("taxPrincipal").value) || 0;
+
+    let benefit80C = Math.min(principal, 150000);
+    let benefit24B = Math.min(interest, 200000);
+
+    let totalBenefit = benefit80C + benefit24B;
+
+    document.getElementById("benefit80C").textContent = benefit80C.toLocaleString("en-IN");
+    document.getElementById("benefit24B").textContent = benefit24B.toLocaleString("en-IN");
+    document.getElementById("totalTaxBenefit").textContent = totalBenefit.toLocaleString("en-IN");
+
+    document.getElementById("taxResult").style.display = "block";
+}
+function calculateCIBIL() {
+
+    let score = parseInt(document.getElementById("cibilScore").value);
+
+    if (isNaN(score) || score < 300 || score > 900) {
+        alert("Please enter a CIBIL score between 300 and 900.");
+        return;
+    }
+
+    let rating = "";
+    let chance = "";
+    let interest = "";
+    let advice = "";
+
+    if (score >= 750) {
+        rating = "🟢 Excellent";
+        chance = "95%+";
+        interest = "Best Interest Rate";
+        advice = "Excellent! Maintain timely EMI payments.";
+    } else if (score >= 650) {
+        rating = "🟡 Good";
+        chance = "75%";
+        interest = "Normal Interest Rate";
+        advice = "Pay EMIs on time and keep credit utilization low.";
+    } else if (score >= 550) {
+        rating = "🟠 Fair";
+        chance = "50%";
+        interest = "Higher Interest Rate";
+        advice = "Reduce outstanding loans and improve repayment history.";
+    } else {
+        rating = "🔴 Poor";
+        chance = "Low";
+        interest = "Loan approval may be difficult";
+        advice = "Improve your credit score before applying for a loan.";
+    }
+
+    document.getElementById("cibilRating").textContent = rating;
+    document.getElementById("loanChance").textContent = chance;
+    document.getElementById("interestRate").textContent = interest;
+    document.getElementById("cibilAdvice").textContent = advice;
+
+    document.getElementById("cibilResult").style.display = "block";
+} 
+ function calculateStampDuty() {
+
+    let propertyValue = parseFloat(document.getElementById("propertyValue").value);
+    let state = document.getElementById("state").value;
+
+    if (isNaN(propertyValue) || propertyValue <= 0) {
+        alert("Please enter a valid property value.");
+        return;
+    }
+
+    let stampRate = 0;
+let registration = 30000;
+
+switch (state) {
+
+case "gujarat":
+    stampRate = 4.9;
+    registration = 30000;
+    break;
+
+case "maharashtra":
+    stampRate = 5.0;
+    registration = 30000;
+    break;
+
+case "rajasthan":
+    stampRate = 6.0;
+    registration = 25000;
+    break;
+
+case "madhya_pradesh":
+    stampRate = 7.5;
+    registration = 25000;
+    break;
+
+case "uttar_pradesh":
+    stampRate = 7.0;
+    registration = 30000;
+    break;
+
+case "delhi":
+    stampRate = 6.0;
+    registration = 30000;
+    break;
+
+case "haryana":
+    stampRate = 5.0;
+    registration = 25000;
+    break;
+
+case "punjab":
+    stampRate = 6.0;
+    registration = 25000;
+    break;
+
+case "jharkhand":
+    stampRate = 4.0;
+    registration = 30000;
+    break;
+case "karnataka":
+    stampRate = 5.0;
+    registration = 30000;
+    break;
+
+case "kerala":
+    stampRate = 8.0;
+    registration = 20000;
+    break;
+
+case "tamil_nadu":
+    stampRate = 7.0;
+    registration = 20000;
+    break;
+
+case "telangana":
+    stampRate = 4.0;
+    registration = 20000;
+    break;
+
+case "andhra_pradesh":
+    stampRate = 5.0;
+    registration = 20000;
+    break;
+
+case "odisha":
+    stampRate = 5.0;
+    registration = 25000;
+    break;
+
+case "chhattisgarh":
+    stampRate = 5.0;
+    registration = 25000;
+    break;
+
+case "bihar":
+    stampRate = 6.0;
+    registration = 20000;
+    break;
+
+case "assam":
+    stampRate = 8.0;
+    registration = 20000;
+    break;
+case "goa":
+    stampRate = 3.5;
+    registration = 30000;
+    break;
+
+case "himachal_pradesh":
+    stampRate = 6.0;
+    registration = 25000;
+    break;
+
+case "uttarakhand":
+    stampRate = 5.0;
+    registration = 25000;
+    break;
+
+case "west_bengal":
+    stampRate = 6.0;
+    registration = 20000;
+    break;
+
+case "sikkim":
+    stampRate = 5.0;
+    registration = 20000;
+    break;
+
+case "tripura":
+    stampRate = 5.0;
+    registration = 20000;
+    break;
+
+case "manipur":
+    stampRate = 7.0;
+    registration = 20000;
+    break;
+
+case "meghalaya":
+    stampRate = 9.0;
+    registration = 20000;
+    break;
+
+case "mizoram":
+    stampRate = 5.0;
+    registration = 20000;
+    break;
+
+case "nagaland":
+    stampRate = 5.0;
+    registration = 20000;
+    break;
+case "andaman_nicobar":
+    stampRate = 6.0;
+    registration = 20000;
+    break;
+
+case "chandigarh":
+    stampRate = 6.0;
+    registration = 25000;
+    break;
+
+case "dadra_nagar_haveli_daman_diu":
+    stampRate = 4.0;
+    registration = 20000;
+    break;
+
+case "jammu_kashmir":
+    stampRate = 5.0;
+    registration = 25000;
+    break;
+
+case "ladakh":
+    stampRate = 5.0;
+    registration = 25000;
+    break;
+
+case "lakshadweep":
+    stampRate = 4.0;
+    registration = 20000;
+    break;
+
+case "puducherry":
+    stampRate = 7.0;
+    registration = 20000;
+    break;
+
+case "arunachal_pradesh":
+    stampRate = 6.0;
+    registration = 20000;
+    break;
+
+default:
+    stampRate = 5.0;
+    registration = 30000;        
+
+}
+
+    let stampDuty = (propertyValue * stampRate) / 100;
+    let totalCost = stampDuty + registration;
+
+    document.getElementById("stampDuty").textContent =
+        stampDuty.toLocaleString("en-IN", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+
+    document.getElementById("registrationCharge").textContent =
+        registration.toLocaleString("en-IN");
+
+    document.getElementById("totalCost").textContent =
+        totalCost.toLocaleString("en-IN", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+
+    document.getElementById("stampResult").style.display = "block";
+}   
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+</body>
