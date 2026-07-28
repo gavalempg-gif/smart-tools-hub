@@ -296,7 +296,15 @@ body:not(.dark-mode) #eligibilityResult{
 <label>Yearly Prepayment (₹)</label>
 <input type="number" id="prepayment" value="50000" placeholder="50000">
 </div>
-
+<div class="input-box">
+    <label>Prepayment Frequency</label>
+    <select id="prepaymentFrequency">
+        <option value="12">Yearly</option>
+        <option value="6">Every 6 Months</option>
+        <option value="3">Quarterly</option>
+        <option value="1">Monthly</option>
+    </select>
+</div>
 <button onclick="calculatePrepayment()"
 style="background:#8b5cf6;color:white;">
 💰 Calculate Prepayment Benefit
