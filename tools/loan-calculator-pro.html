@@ -907,7 +907,7 @@ if(balanceChart){
         balance -= principal;
         totalInterestPaid += interest;
 
-        if (month % 12 === 0 && balance > 0) {
+        if (month % frequency === 0 && balance > 0) {
             balance = Math.max(balance - prepayment, 0);
         }
     }
