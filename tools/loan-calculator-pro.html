@@ -1271,7 +1271,57 @@ default:
         });
 
     document.getElementById("stampResult").style.display = "block";
-}   
+}
+function calculateFixedVsFloating() {
+
+    let P = parseFloat(document.getElementById("loanAmountCompare").value);
+    let fixedRate = parseFloat(document.getElementById("fixedRate").value);
+    let floatingRate = parseFloat(document.getElementById("floatingRate").value);
+    let years = parseInt(document.getElementById("compareYears").value);
+
+    if (isNaN(P) || isNaN(fixedRate) || isNaN(floatingRate) || isNaN(years)) {
+        alert("Please fill all fields.");
+        return;
+    }
+
+    let n = years * 12;
+
+    function calculateEMI(principal, annualRate, months) {
+        let r = annualRate / 12 / 100;
+        return principal * r * Math.pow(1 + r, months) /
+               (Math.pow(1 + r, months) - 1);
+    }
+
+    let fixedEMI = calculateEMI(P, fixedRate, n);
+    let floatingEMI = calculateEMI(P, floatingRate, n);
+
+    let fixedInterest = (fixedEMI * n) - P;
+    let floatingInterest = (floatingEMI * n) - P;
+
+    document.getElementById("fixedEMI").textContent =
+        fixedEMI.toLocaleString("en-IN", {maximumFractionDigits:2});
+
+    document.getElementById("floatingEMI").textContent =
+        floatingEMI.toLocaleString("en-IN", {maximumFractionDigits:2});
+
+    document.getElementById("fixedInterest").textContent =
+        fixedInterest.toLocaleString("en-IN", {maximumFractionDigits:2});
+
+    document.getElementById("floatingInterest").textContent =
+        floatingInterest.toLocaleString("en-IN", {maximumFractionDigits:2});
+
+    if (fixedInterest < floatingInterest) {
+        document.getElementById("betterOption").textContent = "Fixed Interest";
+        document.getElementById("savingAmount").textContent =
+            (floatingInterest - fixedInterest).toLocaleString("en-IN", {maximumFractionDigits:2});
+    } else {
+        document.getElementById("betterOption").textContent = "Floating Interest";
+        document.getElementById("savingAmount").textContent =
+            (fixedInterest - floatingInterest).toLocaleString("en-IN", {maximumFractionDigits:2});
+    }
+
+    document.getElementById("fixedFloatingResult").style.display = "block";
+}    
 </script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
