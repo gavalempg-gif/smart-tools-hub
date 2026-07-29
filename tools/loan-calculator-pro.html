@@ -875,6 +875,10 @@ if(balanceChart){
     let R = parseFloat(document.getElementById("rate").value);
     let Y = parseFloat(document.getElementById("years").value);
     let prepayment = parseFloat(document.getElementById("prepayment").value);
+     alert("Loan = " + P);
+     alert("Rate = " + R);
+     alert("Years = " + Y);
+     alert("Prepayment = " + prepayment);
     let frequency = parseInt(document.getElementById("prepaymentFrequency").value);
     if (isNaN(P) || isNaN(R) || isNaN(Y) || isNaN(prepayment) || P <= 0 || R <= 0 || Y <= 0 || prepayment <= 0) {
         alert("Please enter valid values.");
