@@ -870,35 +870,32 @@ if(balanceChart){
     newWindow.print();
 
 }
- function calculatePrepayment() {
+function calculatePrepayment() {
+
     let P = parseFloat(document.getElementById("loanAmount").value);
     let R = parseFloat(document.getElementById("rate").value);
     let Y = parseFloat(document.getElementById("years").value);
     let prepayment = parseFloat(document.getElementById("prepayment").value);
-     alert("Loan = " + P);
-     alert("Rate = " + R);
-     alert("Years = " + Y);
-     alert("Prepayment = " + prepayment);
     let frequency = parseInt(document.getElementById("prepaymentFrequency").value);
-    if (isNaN(P) || isNaN(R) || isNaN(Y) || isNaN(prepayment) || P <= 0 || R <= 0 || Y <= 0 || prepayment <= 0) {
+
+    if (isNaN(P) || isNaN(R) || isNaN(Y) || isNaN(prepayment)) {
         alert("Please enter valid values.");
         return;
     }
 
-    let monthlyRate = R / (12 * 100);
-    let totalMonths = Math.round(Y * 12);
+    let monthlyRate = R / 12 / 100;
+    let months = Y * 12;
 
-    let emi = (P * monthlyRate * Math.pow(1 + monthlyRate, totalMonths)) /
-              (Math.pow(1 + monthlyRate, totalMonths) - 1);
-
-    let originalTotalPayment = emi * totalMonths;
-    let originalInterest = originalTotalPayment - P;
+    let emi =
+        (P * monthlyRate * Math.pow(1 + monthlyRate, months)) /
+        (Math.pow(1 + monthlyRate, months) - 1);
 
     let balance = P;
+    let totalInterest = 0;
     let month = 0;
-    let totalInterestPaid = 0;
 
-    while (balance > 0 && month < 1000) {
+    while (balance > 1 && month < months) {
+
         month++;
 
         let interest = balance * monthlyRate;
@@ -909,45 +906,27 @@ if(balanceChart){
         }
 
         balance -= principal;
-        totalInterestPaid += interest;
+        totalInterest += interest;
 
         if (month % frequency === 0 && balance > 0) {
-            balance = Math.max(balance - prepayment, 0);
+            balance = Math.max(0, balance - prepayment);
         }
     }
 
-    let newTenure = month / 12;
-    let yearsSaved = Y - newTenure;
-    let interestSaved = originalInterest - totalInterestPaid;
-    let newTotalPayment = P + totalInterestPaid;
+    let newYears = month / 12;
 
-    document.getElementById("savedInterest").innerHTML = interestSaved.toFixed(2);
-    document.getElementById("savedYears").innerHTML = yearsSaved.toFixed(2);
-    document.getElementById("newTenure").innerHTML = newTenure.toFixed(2);
-    document.getElementById("newInterest").innerHTML = totalInterestPaid.toFixed(2);
+    document.getElementById("savedInterest").innerHTML = "Estimated";
+    document.getElementById("savedYears").innerHTML = (Y - newYears).toFixed(2);
+    document.getElementById("newTenure").innerHTML = newYears.toFixed(2);
+    document.getElementById("newInterest").innerHTML = totalInterest.toFixed(2);
 
-    document.getElementById("emi").textContent = emi.toFixed(2);
-    document.getElementById("interest").textContent = totalInterestPaid.toFixed(2);
-    document.getElementById("total").textContent = newTotalPayment.toFixed(2);
+    document.getElementById("emi").innerHTML = emi.toFixed(2);
+    document.getElementById("interest").innerHTML = totalInterest.toFixed(2);
+    document.getElementById("total").innerHTML = (P + totalInterest).toFixed(2);
 
     document.getElementById("prepaymentResult").style.display = "block";
     document.getElementById("result").style.display = "block";
-
-    if (loanChart) {
-        loanChart.destroy();
-    }
-
-    loanChart = new Chart(document.getElementById("loanChart"), {
-        type: "pie",
-        data: {
-            labels: ["Principal", "Interest Paid"],
-            datasets: [{
-                data: [P, totalInterestPaid],
-                backgroundColor: ["#2196F3", "#FF6384"]
-            }]
-        }
-    });
-}
+} 
  
 
 function compareLoans(){
