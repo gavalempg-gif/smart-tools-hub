@@ -915,7 +915,8 @@ function calculatePrepayment() {
 
     let newYears = month / 12;
 
-    document.getElementById("savedInterest").innerHTML = "Estimated";
+    document.getElementById("savedInterest").textContent =
+    (originalInterest - totalInterestPaid).toFixed(2);
     document.getElementById("savedYears").innerHTML = (Y - newYears).toFixed(2);
     document.getElementById("newTenure").innerHTML = newYears.toFixed(2);
     document.getElementById("newInterest").innerHTML = totalInterest.toFixed(2);
