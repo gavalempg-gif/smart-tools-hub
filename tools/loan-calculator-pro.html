@@ -889,7 +889,8 @@ function calculatePrepayment() {
     let emi =
         (P * monthlyRate * Math.pow(1 + monthlyRate, months)) /
         (Math.pow(1 + monthlyRate, months) - 1);
-
+    let originalTotalPayment = emi * months;
+    let originalInterest = originalTotalPayment - P;
     let balance = P;
     let totalInterest = 0;
     let month = 0;
