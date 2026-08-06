@@ -954,7 +954,7 @@ let newYears = month / 12;
 let interestSaved = originalInterest - totalInterest;
 
     document.getElementById("savedInterest").textContent =
-    (originalInterest - totalInterest).toFixed(2); 
+    interestSaved.toFixed(2);
   
     document.getElementById("savedYears").innerHTML = (Y - newYears).toFixed(2);
     document.getElementById("newTenure").innerHTML = newYears.toFixed(2);
