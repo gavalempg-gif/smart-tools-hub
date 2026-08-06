@@ -939,28 +939,7 @@ for (let i = 0; i < originalMonths; i++) {
 
     document.getElementById("savedInterest").textContent =
     (originalInterest - totalInterest).toFixed(2); 
-    // ===== PART 2 START =====
-
-// If loan is still not closed, continue EMI until balance becomes zero
-while (balance > 0) {
-
-    month++;
-
-    let interest = balance * monthlyRate;
-    let principal = emi - interest;
-
-    if (principal > balance) {
-        principal = balance;
-    }
-
-    balance -= principal;
-    totalInterest += interest;
-}
-
-let newYears = month / 12;
-let interestSaved = originalInterest - totalInterest;
-
-// ===== PART 2 END =====
+  
     document.getElementById("savedYears").innerHTML = (Y - newYears).toFixed(2);
     document.getElementById("newTenure").innerHTML = newYears.toFixed(2);
     document.getElementById("newInterest").innerHTML = totalInterest.toFixed(2);
