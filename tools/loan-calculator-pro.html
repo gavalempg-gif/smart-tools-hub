@@ -889,6 +889,27 @@ function calculatePrepayment() {
     let emi =
         (P * monthlyRate * Math.pow(1 + monthlyRate, months)) /
         (Math.pow(1 + monthlyRate, months) - 1);
+    // Original Loan Details
+let originalBalance = P;
+let originalInterest = 0;
+let originalMonths = months;
+
+for (let i = 0; i < originalMonths; i++) {
+
+    let interest = originalBalance * monthlyRate;
+    let principal = emi - interest;
+
+    if (principal > originalBalance) {
+        principal = originalBalance;
+    }
+
+    originalBalance -= principal;
+    originalInterest += interest;
+
+    if (originalBalance <= 0) {
+        break;
+    }
+}
     let originalTotalPayment = emi * months;
     let originalInterest = originalTotalPayment - P;
     let balance = P;
