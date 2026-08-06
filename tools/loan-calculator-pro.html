@@ -934,8 +934,24 @@ for (let i = 0; i < originalMonths; i++) {
             balance = Math.max(0, balance - prepayment);
         }
     }
+    // Continue EMI until loan closes
+while (balance > 0) {
 
-    let newYears = month / 12;
+    month++;
+
+    let interest = balance * monthlyRate;
+    let principal = emi - interest;
+
+    if (principal > balance) {
+        principal = balance;
+    }
+
+    balance -= principal;
+    totalInterest += interest;
+}
+
+let newYears = month / 12;
+let interestSaved = originalInterest - totalInterest;
 
     document.getElementById("savedInterest").textContent =
     (originalInterest - totalInterest).toFixed(2); 
