@@ -950,8 +950,9 @@ while (balance > 0) {
 }
 
 let newYears = month / 12;
-let interestSaved = originalInterest - totalInterest;
-
+let interestSaved = originalInterest - totalInterest;   
+let newTotalInterest = totalInterest;
+    
     document.getElementById("savedInterest").textContent =
     interestSaved.toFixed(2);
   
