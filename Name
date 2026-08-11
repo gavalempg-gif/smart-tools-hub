@@ -1,1 +1,150 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>About Us - Smart Tools Hub</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#f5f7fb;
+    color:#111827;
+}
+
+header{
+    background:#2563eb;
+    color:white;
+    text-align:center;
+    padding:30px 20px;
+}
+
+header h1{
+    font-size:32px;
+}
+
+header p{
+    margin-top:10px;
+}
+
+.container{
+    width:92%;
+    max-width:900px;
+    margin:30px auto;
+}
+
+.card{
+    background:white;
+    padding:25px;
+    margin-bottom:20px;
+    border-radius:15px;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+}
+
+.card h2{
+    color:#2563eb;
+    margin-bottom:15px;
+}
+
+.card p{
+    line-height:1.7;
+    margin-bottom:12px;
+}
+
+.home-btn{
+    display:inline-block;
+    background:#2563eb;
+    color:white;
+    text-decoration:none;
+    padding:12px 22px;
+    border-radius:8px;
+    margin-top:10px;
+}
+
+footer{
+    background:#111827;
+    color:white;
+    text-align:center;
+    padding:20px;
+    margin-top:30px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>About Smart Tools Hub</h1>
+    <p>Free Online Calculators & Tools</p>
+</header>
+
+<div class="container">
+
+    <div class="card">
+        <h2>About Us</h2>
+
+        <p>
+            Welcome to Smart Tools Hub, a free online platform
+            providing useful calculators and tools for everyday needs.
+        </p>
+
+        <p>
+            Our goal is to make calculations simple, fast and easy
+            to use on mobile phones, tablets and computers.
+        </p>
+    </div>
+
+    <div class="card">
+        <h2>Our Tools</h2>
+
+        <p>
+            Smart Tools Hub provides various online calculators,
+            including EMI, Loan, SIP, FD, RD, GST, BMI, Percentage,
+            Currency and Discount calculators.
+        </p>
+
+        <p>
+            These tools are designed to provide quick estimates and
+            help users understand their calculations more easily.
+        </p>
+    </div>
+
+    <div class="card">
+        <h2>Our Mission</h2>
+
+        <p>
+            Our mission is to provide simple and useful online tools
+            that anyone can access easily and use for free.
+        </p>
+    </div>
+
+    <div class="card">
+        <h2>Important Information</h2>
+
+        <p>
+            Calculator results are provided for informational and
+            estimation purposes only. Actual results may vary depending
+            on the rates, terms and conditions applicable to the user.
+        </p>
+    </div>
+
+    <div class="card">
+        <a class="home-btn" href="index.html">🏠 Back to Home</a>
+    </div>
+
+</div>
+
+<footer>
+    <p>© 2026 Smart Tools Hub</p>
+</footer>
+
+</body>
+</html>
