@@ -170,6 +170,27 @@ margin-top:30px;
 <p>© 2026 Smart Tools Hub</p>
 
 </footer>
+<script>
+const searchInput = document.querySelector('.search input');
+const cards = document.querySelectorAll('.card');
 
+searchInput.addEventListener('input', function() {
+
+    const searchText = this.value.toLowerCase().trim();
+
+    cards.forEach(function(card) {
+
+        const toolName = card.querySelector('h2').textContent.toLowerCase();
+
+        if (toolName.includes(searchText)) {
+            card.style.display = '';
+        } else {
+            card.style.display = 'none';
+        }
+
+    });
+
+});
+</script>
 </body>
 </html>
