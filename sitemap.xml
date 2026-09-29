@@ -2,67 +2,83 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
   <url>
-    <loc>https://mpg-gif.github.io/smart-tools-hub/</loc>
+    <loc>https://mysmarttool.in/</loc>
+    <priority>1.0</priority>
   </url>
 
   <url>
-    <loc>https://mpg-gif.github.io/smart-tools-hub/about.html</loc>
+    <loc>https://mysmarttool.in/about.html</loc>
+    <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://mpg-gif.github.io/smart-tools-hub/privacy-policy.html</loc>
+    <loc>https://mysmarttool.in/privacy-policy.html</loc>
+    <priority>0.6</priority>
   </url>
 
   <url>
-    <loc>https://mpg-gif.github.io/smart-tools-hub/disclaimer.html</loc>
+    <loc>https://mysmarttool.in/disclaimer.html</loc>
+    <priority>0.5</priority>
   </url>
 
   <url>
-    <loc>https://mpg-gif.github.io/smart-tools-hub/contact.html</loc>
+    <loc>https://mysmarttool.in/contact.html</loc>
+    <priority>0.6</priority>
   </url>
 
   <url>
-    <loc>https://mpg-gif.github.io/smart-tools-hub/tools/age-calculator.html</loc>
+    <loc>https://mysmarttool.in/tools/age-calculator.html</loc>
+    <priority>0.9</priority>
   </url>
 
   <url>
-    <loc>https://mpg-gif.github.io/smart-tools-hub/tools/loan-calculator-pro.html</loc>
+    <loc>https://mysmarttool.in/tools/loan-calculator-pro.html</loc>
+    <priority>0.9</priority>
   </url>
 
   <url>
-    <loc>https://mpg-gif.github.io/smart-tools-hub/tools/tools/gst-calculator.html</loc>
+    <loc>https://mysmarttool.in/tools/tools/gst-calculator.html</loc>
+    <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://mpg-gif.github.io/smart-tools-hub/tools/tools/bmi-calculator.html</loc>
+    <loc>https://mysmarttool.in/tools/tools/bmi-calculator.html</loc>
+    <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://mpg-gif.github.io/smart-tools-hub/tools/tools/sip-calculator.html</loc>
+    <loc>https://mysmarttool.in/tools/tools/sip-calculator.html</loc>
+    <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://mpg-gif.github.io/smart-tools-hub/tools/tools/fd-calculator.html</loc>
+    <loc>https://mysmarttool.in/tools/tools/fd-calculator.html</loc>
+    <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://mpg-gif.github.io/smart-tools-hub/tools/tools/rd-calculator.html</loc>
+    <loc>https://mysmarttool.in/tools/tools/rd-calculator.html</loc>
+    <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://mpg-gif.github.io/smart-tools-hub/tools/tools/percentage-calculator.html</loc>
+    <loc>https://mysmarttool.in/tools/tools/percentage-calculator.html</loc>
+    <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://mpg-gif.github.io/smart-tools-hub/tools/tools/currency-converter.html</loc>
+    <loc>https://mysmarttool.in/tools/tools/currency-converter.html</loc>
+    <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://mpg-gif.github.io/smart-tools-hub/tools/tools/discount-calculator.html</loc>
+    <loc>https://mysmarttool.in/tools/tools/discount-calculator.html</loc>
+    <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://mpg-gif.github.io/smart-tools-hub/tools/tools/loan-calculator.html</loc>
+    <loc>https://mysmarttool.in/tools/tools/loan-calculator.html</loc>
+    <priority>0.8</priority>
   </url>
 
 </urlset>
