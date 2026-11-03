@@ -25,6 +25,10 @@
     <loc>https://mysmarttool.in/contact.html</loc>
     <priority>0.6</priority>
   </url>
+  <url>
+    <loc>https://mysmarttool.in/blog.html</loc>
+    <priority>0.8</priority>
+  </url>
 
   <url>
     <loc>https://mysmarttool.in/tools/age-calculator.html</loc>
